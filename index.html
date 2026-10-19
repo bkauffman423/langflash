@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<link rel="manifest" href="manifest.webmanifest">
+<title>LangFlash — flashcard trainer</title>
+<style>
+:root{
+  --bg:#0f1115; --card:#171a21; --card2:#1d2129; --fg:#e8eaf0; --dim:#8b93a5;
+  --accent:#4f8cff; --good:#3fb96f; --bad:#e05c5c; --warn:#d9a13b; --line:#262b36;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-user-select:none;user-select:none;overflow:hidden}
+#app{height:100dvh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);flex:0 0 auto}
+header .logo{font-weight:700;letter-spacing:.3px}
+header .deckname{color:var(--dim);font-size:13px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:9px;
+  padding:7px 11px;font-size:14px;cursor:pointer}
+.iconbtn.on{border-color:var(--accent);color:var(--accent)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px;position:relative;overflow:hidden}
+#progress{position:absolute;top:0;left:0;height:3px;background:var(--accent);width:0;transition:width .2s}
+#timerbar{position:absolute;bottom:0;left:0;height:4px;background:var(--warn);width:0}
+
+/* home */
+#home{width:min(560px,100%);max-height:100%;overflow:auto}
+#home h1{font-size:22px;margin-bottom:2px}
+#home .sub{color:var(--dim);margin-bottom:16px;font-size:13px}
+.deckcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.deckcard:hover{border-color:var(--accent)}
+.deckcard .t{font-weight:600}
+.deckcard .m{color:var(--dim);font-size:12.5px;margin-top:2px}
+.modes{display:flex;gap:8px;margin:14px 0}
+.modebtn{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 6px;
+  color:var(--fg);font-size:13.5px;cursor:pointer;text-align:center}
+.modebtn.sel{border-color:var(--accent);color:var(--accent)}
+.modebtn small{display:block;color:var(--dim);font-size:11px;margin-top:3px}
+.startbtn{width:100%;background:var(--accent);border:0;color:#fff;font-size:16px;font-weight:600;
+  padding:13px;border-radius:11px;cursor:pointer;margin-top:4px}
+.startbtn:disabled{opacity:.4}
+
+/* card */
+#session{display:none;width:min(720px,100%);height:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#stage{width:100%;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px 20px 20px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer}
+#kind{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+#visual{font-size:84px;line-height:1}
+#visual img{max-width:min(320px,70vw);max-height:200px;border-radius:10px}
+#prompt{font-size:clamp(26px,6vw,44px);font-weight:700;overflow-wrap:break-word}
+#hint{color:var(--dim);font-size:14px;max-width:90%}
+#answer{font-size:clamp(24px,5.5vw,40px);font-weight:700;color:var(--good);overflow-wrap:break-word}
+#answer .alt{display:block;font-size:14px;color:var(--dim);font-weight:400;margin-top:4px}
+#note{color:var(--dim);font-size:13.5px;font-style:italic}
+#tapcue{color:var(--dim);font-size:13px;margin-top:10px}
+#counter{color:var(--dim);font-size:12.5px;margin-top:12px}
+#feedback{font-size:17px;font-weight:700;min-height:24px}
+#feedback.good{color:var(--good)} #feedback.bad{color:var(--bad)}
+
+/* voice */
+#voicebar{display:none;align-items:center;gap:12px;margin-top:14px}
+#micbtn{width:56px;height:56px;border-radius:50%;border:2px solid var(--line);background:var(--card2);
+  color:var(--fg);font-size:22px;cursor:pointer}
+#micbtn.listening{border-color:var(--bad);background:#2a1518;animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(224,92,92,.12)}}
+#spoken{color:var(--dim);font-size:14px;min-width:120px;text-align:left}
+
+/* settings drawer */
+#settings{display:none;position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:20}
+#settings .panel{position:absolute;right:0;top:0;bottom:0;width:min(380px,100%);background:var(--card);
+  border-left:1px solid var(--line);padding:16px;overflow:auto}
+#settings h2{font-size:16px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}
+.row label{font-size:13.5px}
+.row input[type=number]{width:74px;background:var(--card2);border:1px solid var(--line);color:var(--fg);
+  border-radius:8px;padding:6px 8px}
+.row select{background:var(--card2);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:6px}
+.row input[type=checkbox]{width:18px;height:18px}
+.small{font-size:11.5px;color:var(--dim);margin:2px 0 12px}
+#endcard{display:none;text-align:center}
+#endcard .big{font-size:26px;font-weight:700;margin-bottom:6px}
+kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:11.5px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <span class="logo">LangFlash</span>
+    <span class="deckname" id="hdrdeck"></span>
+    <button class="iconbtn" id="soundbtn" title="Sound on/off">🔊</button>
+    <button class="iconbtn" id="settingsbtn" title="Settings">⚙</button>
+    <button class="iconbtn" id="homebtn" title="Back to decks" style="display:none">☰</button>
+  </header>
+  <main>
+    <div id="progress"></div>
+    <div id="timerbar"></div>
+
+    <section id="home">
+      <h1>Foreign-language flashcards</h1>
+      <div class="sub">Word shown in your language → recall the translation. Auto-play, TTS, and voice checking built in.</div>
+      <div class="modes">
+        <button class="modebtn sel" data-mode="manual">Manual<small>tap to reveal</small></button>
+        <button class="modebtn" data-mode="auto">Auto<small>timed show &amp; reveal</small></button>
+        <button class="modebtn" data-mode="voice">Voice quiz<small>say it, get scored</small></button>
+      </div>
+      <div id="decklist"></div>
+    </section>
+
+    <section id="session">
+      <div id="stage">
+        <div id="kind"></div>
+        <div id="visual"></div>
+        <div id="prompt"></div>
+        <div id="hint"></div>
+        <div id="answer" style="display:none"></div>
+        <div id="note"></div>
+        <div id="feedback"></div>
+        <div id="tapcue">tap anywhere to reveal</div>
+      </div>
+      <div id="voicebar">
+        <button id="micbtn" title="Speak the translation">🎙</button>
+        <div id="spoken">tap mic and say it</div>
+      </div>
+      <div id="counter"></div>
+    </section>
+
+    <section id="endcard">
+      <div class="big" id="endscore"></div>
+      <div class="sub" id="enddetail" style="color:var(--dim)"></div>
+      <button class="startbtn" id="againbtn" style="width:auto;padding:10px 26px">Again</button>
+    </section>
+
+    <div id="settings"><div class="panel">
+      <h2>Settings</h2>
+      <div class="small">Auto-mode base seconds (words / phrases / sentences). Longer text gets extra time automatically.</div>
+      <div class="row"><label>Word show (s)</label><input type="number" id="s_word" min="1" step="0.5"></div>
+      <div class="row"><label>Phrase show (s)</label><input type="number" id="s_phrase" min="1" step="0.5"></div>
+      <div class="row"><label>Sentence show (s)</label><input type="number" id="s_sentence" min="1" step="0.5"></div>
+      <div class="row"><label>Reveal dwell (s)</label><input type="number" id="s_reveal" min="1" step="0.5"></div>
+      <div class="row"><label>Extra time per 10 chars (s)</label><input type="number" id="s_chars" min="0" step="0.5"></div>
+      <div class="row"><label>Speed multiplier</label><input type="number" id="s_mult" min="0.25" step="0.25"></div>
+      <div class="small">Speech</div>
+      <div class="row"><label>Speak native word</label><input type="checkbox" id="s_tts_native"></div>
+      <div class="row"><label>Speak translation</label><input type="checkbox" id="s_tts_target"></div>
+      <div class="row"><label>Voice</label><select id="s_voice"><option value="">auto</option></select></div>
+      <div class="small">Session</div>
+      <div class="row"><label>Cards per session</label><input type="number" id="s_count" min="5" step="5"></div>
+      <div class="row"><label>Shuffle</label><input type="checkbox" id="s_shuffle"></div>
+      <div class="row"><label>Repeat missed cards more</label><input type="checkbox" id="s_weight"></div>
+      <div class="small">Keys: <kbd>space</kbd> reveal/next · <kbd>m</kbd> mute · <kbd>Esc</kbd> home</div>
+    </div></div>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+{
+  "id": "fr-core",
+  "name": "French — core 20",
+  "native": "en",
+  "target": "fr",
+  "items": [
+    {
+      "front": "apple",
+      "back": "la pomme",
+      "emoji": "🍎"
+    },
+    {
+      "front": "water",
+      "back": "l'eau",
+      "emoji": "💧"
+    },
+    {
+      "front": "to eat",
+      "back": "manger",
+      "emoji": "🍽️"
+    },
+    {
+      "front": "dog",
+      "back": "le chien",
+      "emoji": "🐕"
+    },
+    {
+      "front": "cat",
+      "back": "le chat",
+      "emoji": "🐈"
+    },
+    {
+      "front": "house",
+      "back": "la maison",
+      "emoji": "🏠"
+    },
+    {
+      "front": "book",
+      "back": "le livre",
+      "emoji": "📖"
+    },
+    {
+      "front": "friend",
+      "back": "l'ami",
+      "emoji": "🧑‍🤝‍🧑"
+    },
+    {
+      "front": "bread",
+      "back": "le pain",
+      "emoji": "🍞"
+    },
+    {
+      "front": "coffee",
+      "back": "le café",
+      "emoji": "☕"
+    },
+    {
+      "front": "good morning",
+      "back": "bonjour",
+      "kind": "phrase",
+      "emoji": "🌄"
+    },
+    {
+      "front": "thank you",
+      "back": "merci",
+      "kind": "phrase",
+      "emoji": "🙏"
+    },
+    {
+      "front": "how much?",
+      "back": "combien ça coûte ?",
+      "kind": "phrase",
+      "emoji": "💶"
+    },
+    {
+      "front": "I don't understand",
+      "back": "je ne comprends pas",
+      "kind": "sentence",
+      "emoji": "🤷"
+    },
+    {
+      "front": "Where is the station?",
+      "back": "où est la gare ?",
+      "kind": "sentence",
+      "emoji": "🚉"
+    },
+    {
+      "front": "night",
+      "back": "la nuit",
+      "emoji": "🌙"
+    },
+    {
+      "front": "to sleep",
+      "back": "dormir",
+      "emoji": "😴"
+    },
+    {
+      "front": "big",
+      "back": "grand",
+      "emoji": "➕"
+    },
+    {
+      "front": "small",
+      "back": "petit",
+      "emoji": "➖"
+    },
+    {
+      "front": "I would like a coffee",
+      "back": "je voudrais un café",
+      "kind": "sentence",
+      "emoji": "☕"
+    }
+  ]
+}

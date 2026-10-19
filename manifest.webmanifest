@@ -1,0 +1,13 @@
+{
+  "name": "LangFlash",
+  "short_name": "LangFlash",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1115",
+  "theme_color": "#0f1115",
+  "description": "Foreign-language flashcard trainer with auto-play, TTS and voice checking.",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

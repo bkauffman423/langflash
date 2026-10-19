@@ -1,0 +1,88 @@
+{
+  "id": "de-core",
+  "name": "German — core 15",
+  "native": "en",
+  "target": "de",
+  "items": [
+    {
+      "front": "apple",
+      "back": "der Apfel",
+      "emoji": "🍎"
+    },
+    {
+      "front": "water",
+      "back": "das Wasser",
+      "emoji": "💧"
+    },
+    {
+      "front": "to eat",
+      "back": "essen",
+      "emoji": "🍽️"
+    },
+    {
+      "front": "dog",
+      "back": "der Hund",
+      "emoji": "🐕"
+    },
+    {
+      "front": "house",
+      "back": "das Haus",
+      "emoji": "🏠"
+    },
+    {
+      "front": "book",
+      "back": "das Buch",
+      "emoji": "📖"
+    },
+    {
+      "front": "bread",
+      "back": "das Brot",
+      "emoji": "🍞"
+    },
+    {
+      "front": "good morning",
+      "back": "guten Morgen",
+      "kind": "phrase",
+      "emoji": "🌄"
+    },
+    {
+      "front": "thank you",
+      "back": "danke",
+      "kind": "phrase",
+      "emoji": "🙏"
+    },
+    {
+      "front": "I don't understand",
+      "back": "ich verstehe nicht",
+      "kind": "sentence",
+      "emoji": "🤷"
+    },
+    {
+      "front": "Where is the station?",
+      "back": "Wo ist der Bahnhof?",
+      "kind": "sentence",
+      "emoji": "🚉"
+    },
+    {
+      "front": "to sleep",
+      "back": "schlafen",
+      "emoji": "😴"
+    },
+    {
+      "front": "big",
+      "back": "groß",
+      "emoji": "➕"
+    },
+    {
+      "front": "small",
+      "back": "klein",
+      "emoji": "➖"
+    },
+    {
+      "front": "I would like a coffee",
+      "back": "ich hätte gern einen Kaffee",
+      "kind": "sentence",
+      "emoji": "☕"
+    }
+  ]
+}

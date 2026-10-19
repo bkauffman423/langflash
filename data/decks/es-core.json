@@ -1,0 +1,167 @@
+{
+  "id": "es-core",
+  "name": "Spanish — core 30",
+  "native": "en",
+  "target": "es",
+  "items": [
+    {
+      "front": "apple",
+      "back": "la manzana",
+      "emoji": "🍎",
+      "note": "la = the"
+    },
+    {
+      "front": "water",
+      "back": "el agua",
+      "emoji": "💧",
+      "note": "el agua is feminine despite 'el'"
+    },
+    {
+      "front": "to eat",
+      "back": "comer",
+      "emoji": "🍽️"
+    },
+    {
+      "front": "to drink",
+      "back": "beber",
+      "emoji": "🥤"
+    },
+    {
+      "front": "dog",
+      "back": "el perro",
+      "emoji": "🐕"
+    },
+    {
+      "front": "cat",
+      "back": "el gato",
+      "emoji": "🐈"
+    },
+    {
+      "front": "house",
+      "back": "la casa",
+      "emoji": "🏠"
+    },
+    {
+      "front": "car",
+      "back": "el coche",
+      "emoji": "🚗"
+    },
+    {
+      "front": "book",
+      "back": "el libro",
+      "emoji": "📖"
+    },
+    {
+      "front": "friend",
+      "back": "el amigo",
+      "emoji": "🧑‍🤝‍🧑"
+    },
+    {
+      "front": "good morning",
+      "back": "buenos días",
+      "kind": "phrase",
+      "emoji": "🌄"
+    },
+    {
+      "front": "thank you",
+      "back": "gracias",
+      "kind": "phrase",
+      "emoji": "🙏"
+    },
+    {
+      "front": "how much?",
+      "back": "¿cuánto cuesta?",
+      "kind": "phrase",
+      "emoji": "💶"
+    },
+    {
+      "front": "I don't understand",
+      "back": "no entiendo",
+      "kind": "sentence",
+      "emoji": "🤷"
+    },
+    {
+      "front": "Where is the station?",
+      "back": "¿Dónde está la estación?",
+      "kind": "sentence",
+      "emoji": "🚉"
+    },
+    {
+      "front": "bread",
+      "back": "el pan",
+      "emoji": "🍞"
+    },
+    {
+      "front": "milk",
+      "back": "la leche",
+      "emoji": "🥛"
+    },
+    {
+      "front": "coffee",
+      "back": "el café",
+      "emoji": "☕"
+    },
+    {
+      "front": "night",
+      "back": "la noche",
+      "emoji": "🌙"
+    },
+    {
+      "front": "day",
+      "back": "el día",
+      "emoji": "☀️"
+    },
+    {
+      "front": "to work",
+      "back": "trabajar",
+      "emoji": "💼"
+    },
+    {
+      "front": "to sleep",
+      "back": "dormir",
+      "emoji": "😴"
+    },
+    {
+      "front": "big",
+      "back": "grande",
+      "emoji": "➕"
+    },
+    {
+      "front": "small",
+      "back": "pequeño",
+      "emoji": "➖"
+    },
+    {
+      "front": "fast",
+      "back": "rápido",
+      "emoji": "⚡"
+    },
+    {
+      "front": "slow",
+      "back": "lento",
+      "emoji": "🐢"
+    },
+    {
+      "front": "the weather",
+      "back": "el tiempo",
+      "emoji": "🌦️",
+      "note": "tiempo = weather OR time"
+    },
+    {
+      "front": "money",
+      "back": "el dinero",
+      "emoji": "💰"
+    },
+    {
+      "front": "street",
+      "back": "la calle",
+      "emoji": "🛣️"
+    },
+    {
+      "front": "I would like a coffee",
+      "back": "quisiera un café",
+      "kind": "sentence",
+      "emoji": "☕"
+    }
+  ]
+}

@@ -56,6 +56,9 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 #prompt{font-size:clamp(26px,6vw,44px);font-weight:700;overflow-wrap:break-word}
 #hint{color:var(--dim);font-size:14px;max-width:90%}
 #answer{font-size:clamp(24px,5.5vw,40px);font-weight:700;color:var(--good);overflow-wrap:break-word}
+#answer .tw{display:block}
+#answer.rtl .tw{direction:rtl;unicode-bidi:isolate;font-family:"Segoe UI","Tahoma","Noto Naskh Arabic","Vazirmatn",sans-serif}
+#answer .roman{display:block;font-size:clamp(16px,3.5vw,22px);color:var(--warn);font-weight:600;margin-top:6px;letter-spacing:.4px}
 #answer .alt{display:block;font-size:14px;color:var(--dim);font-weight:400;margin-top:4px}
 #note{color:var(--dim);font-size:13.5px;font-style:italic}
 #tapcue{color:var(--dim);font-size:13px;margin-top:10px}
@@ -149,6 +152,8 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
       <div class="row"><label>Speak native word</label><input type="checkbox" id="s_tts_native"></div>
       <div class="row"><label>Speak translation</label><input type="checkbox" id="s_tts_target"></div>
       <div class="row"><label>Voice</label><select id="s_voice"><option value="">auto</option></select></div>
+      <div class="row"><label>Online voice if none installed</label><input type="checkbox" id="s_tts_fallback"></div>
+      <div class="small">If no system voice exists for the target language, an English voice would mangle it — the online fallback pronounces it natively instead.</div>
       <div class="small">Session</div>
       <div class="row"><label>Cards per session</label><input type="number" id="s_count" min="5" step="5"></div>
       <div class="row"><label>Shuffle</label><input type="checkbox" id="s_shuffle"></div>

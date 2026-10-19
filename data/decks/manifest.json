@@ -10,5 +10,9 @@
   {
     "file": "de-core.json",
     "name": "German — core 15"
+  },
+  {
+    "file": "fa-core.json",
+    "name": "Farsi (Persian) — core 30"
   }
 ]

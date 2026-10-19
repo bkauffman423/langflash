@@ -85,6 +85,43 @@ const FALLBACK_DECKS = [
       {front:"small", back:"klein", emoji:"➖"},
       {front:"I would like a coffee", back:"ich hätte gern einen Kaffee", kind:"sentence", emoji:"☕"}
     ]
+  },
+  {
+    id: "fa-core", name: "Farsi (Persian) — core 30", native: "en", target: "fa",
+    items: [
+      {front:"apple", back:"سیب", roman:"sib", emoji:"🍎"},
+      {front:"water", back:"آب", roman:"âb", emoji:"💧"},
+      {front:"to eat", back:"خوردن", roman:"khordan", emoji:"🍽️"},
+      {front:"to drink", back:"نوشیدن", roman:"nooshidan", emoji:"🥤"},
+      {front:"dog", back:"سگ", roman:"sag", emoji:"🐕"},
+      {front:"cat", back:"گربه", roman:"gorbe", emoji:"🐈"},
+      {front:"house", back:"خانه", roman:"khane", emoji:"🏠"},
+      {front:"car", back:"ماشین", roman:"mashin", emoji:"🚗"},
+      {front:"book", back:"کتاب", roman:"ketab", emoji:"📖"},
+      {front:"friend", back:"دوست", roman:"doost", emoji:"🧑‍🤝‍🧑"},
+      {front:"bread", back:"نان", roman:"nan", emoji:"🍞"},
+      {front:"milk", back:"شیر", roman:"shir", emoji:"🥛"},
+      {front:"coffee", back:"قهوه", roman:"ghahve", emoji:"☕"},
+      {front:"night", back:"شب", roman:"shab", emoji:"🌙"},
+      {front:"day", back:"روز", roman:"rooz", emoji:"☀️"},
+      {front:"to work", back:"کار کردن", roman:"kar kardan", emoji:"💼"},
+      {front:"to sleep", back:"خوابیدن", roman:"khabidan", emoji:"😴"},
+      {front:"big", back:"بزرگ", roman:"bozorg", emoji:"➕"},
+      {front:"small", back:"کوچک", roman:"koochak", emoji:"➖"},
+      {front:"fast", back:"سریع", roman:"sari'", emoji:"⚡"},
+      {front:"slow", back:"آهسته", roman:"âhaste", emoji:"🐢"},
+      {front:"the weather", back:"هوا", roman:"hava", emoji:"🌦️"},
+      {front:"money", back:"پول", roman:"pool", emoji:"💰"},
+      {front:"street", back:"خیابان", roman:"khiyaban", emoji:"🛣️"},
+      {front:"good morning", back:"صبح بخیر", roman:"sobh bekheir", kind:"phrase", emoji:"🌄"},
+      {front:"thank you", back:"ممنون", roman:"mamnun", kind:"phrase", emoji:"🙏"},
+      {front:"please", back:"لطفاً", roman:"lotfan", kind:"phrase", emoji:"🙏"},
+      {front:"how much?", back:"چقدر؟", roman:"cheghadr?", kind:"phrase", emoji:"💶"},
+      {front:"goodbye", back:"خداحافظ", roman:"khodahafez", kind:"phrase", emoji:"👋"},
+      {front:"I don't understand", back:"متوجه نمی‌شوم", roman:"mutavajje nemisham", kind:"sentence", emoji:"🤷"},
+      {front:"Where is the station?", back:"ایستگاه کجاست؟", roman:"istgah kojast?", kind:"sentence", emoji:"🚉"},
+      {front:"I would like a coffee", back:"یک قهوه می‌خواهم", roman:"yek ghahve mikhaham", kind:"sentence", emoji:"☕"}
+    ]
   }
 ];
 
@@ -100,7 +137,7 @@ let recognition = null;
 /* ---------- settings ---------- */
 const DEFAULTS = {
   s_word: 4, s_phrase: 6, s_sentence: 9, s_reveal: 3, s_chars: 0.6, s_mult: 1,
-  s_tts_native: true, s_tts_target: true, s_voice: "",
+  s_tts_native: true, s_tts_target: true, s_voice: "", s_tts_fallback: true,
   s_count: 20, s_shuffle: true, s_weight: true, sound: true
 };
 let S = {...DEFAULTS};
@@ -122,7 +159,7 @@ async function loadDecks(){
   } catch(e){ /* file:// or missing data dir */ }
   if (!list.length) {
     // XHR attempt (works for file:// in some browsers) then embedded fallback
-    for (const f of ["es-core.json","fr-core.json","de-core.json"]) {
+    for (const f of ["es-core.json","fr-core.json","de-core.json","fa-core.json"]) {
       try {
         const x = new XMLHttpRequest();
         x.open("GET", "data/decks/" + f, false);
@@ -231,8 +268,15 @@ function reveal(){
   if (phase !== "prompt") return;
   phase = "answer";
   const it = session.queue[session.i];
-  $("answer").innerHTML = esc(it.back) + (it.note ? `<span class="alt">${esc(it.note)}</span>` : "");
-  $("answer").style.display = "";
+  const rtl = isRtlDeck();
+  const ans = $("answer");
+  ans.classList.toggle("rtl", rtl);
+  // target-script line (RTL isolated for Farsi), then romanization ("Fenglish"), then note
+  let html = `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>`;
+  if (it.roman) html += `<span class="roman">${esc(it.roman)}</span>`;
+  if (it.note) html += `<span class="alt">${esc(it.note)}</span>`;
+  ans.innerHTML = html;
+  ans.style.display = "";
   $("tapcue").textContent = mode === "auto" ? "" : "tap anywhere for next";
   if (S.s_tts_target) speak(it.back, deck.target);
   if (mode === "auto") {
@@ -301,20 +345,87 @@ document.querySelectorAll(".modebtn").forEach(b => b.onclick = () => {
   b.classList.add("sel"); mode = b.dataset.mode;
 });
 
+/* ---------- language metadata ---------- */
+const LANGS = {
+  en: { name: "English", tts: "en-US" },
+  es: { name: "Spanish", tts: "es-ES" },
+  fr: { name: "French",  tts: "fr-FR" },
+  de: { name: "German",  tts: "de-DE" },
+  fa: { name: "Farsi (Persian)", tts: "fa-IR", rtl: true }
+};
+function langMeta(code){ return LANGS[code] || { name: code, tts: code }; }
+function isRtlDeck(){ return !!langMeta(deck && deck.target).rtl; }
+
 /* ---------- TTS ---------- */
 function voices(){ return window.speechSynthesis ? speechSynthesis.getVoices() : []; }
 function pickVoice(lang){
-  if (S.s_voice) { const v = voices().find(v => v.name === S.s_voice); if (v) return v; }
-  return voices().find(v => v.lang && v.lang.toLowerCase().startsWith(lang)) || null;
+  const base = (lang || "").toLowerCase().split("-")[0];
+  // A manually-picked voice only wins if its language matches the text being
+  // spoken — otherwise an English voice would read Spanish/Farsi with English rules.
+  if (S.s_voice) {
+    const v = voices().find(v => v.name === S.s_voice);
+    if (v && v.lang && v.lang.toLowerCase().split("-")[0] === base) return v;
+  }
+  // exact-ish match first (fa-IR, es-ES...), then any voice whose language matches
+  return voices().find(v => v.lang && v.lang.toLowerCase().replace("_","-") === lang.toLowerCase())
+      || voices().find(v => v.lang && v.lang.toLowerCase().startsWith(base))
+      || null;
 }
 function speak(text, lang){
-  if (!S.sound || !window.speechSynthesis) return;
-  const u = new SpeechSynthesisUtterance(text);
-  const v = pickVoice(lang); if (v) u.voice = v;
-  u.lang = lang; u.rate = 0.95;
-  speechSynthesis.speak(u);
+  if (!S.sound || !text) return;
+  const meta = langMeta(lang);
+  const v = pickVoice(meta.tts);
+  if (v || (window.speechSynthesis && meta.tts.split("-")[0] === "en")) {
+    // A matching system voice exists (or it's English — always safe): use it.
+    if (window.speechSynthesis) {
+      const u = new SpeechSynthesisUtterance(text);
+      if (v) u.voice = v;
+      u.lang = meta.tts; u.rate = 0.95;
+      speechSynthesis.speak(u);
+      return;
+    }
+  }
+  // No matching voice: speaking foreign text with an English voice mangles it.
+  // Fallback chain: local Edge-TTS helper (best; native neural voices incl. Farsi)
+  // → Google online TTS (no Farsi voice, works for most others).
+  if (S.s_tts_fallback !== false) speakFallback(text, meta.tts);
 }
-function stopSpeaking(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+let onlineAudio = null;
+async function speakFallback(text, lang){
+  const base = lang.split("-")[0];
+  // 1) local helper: python tts_server.py (see tts-server.cmd) — Edge neural voices
+  try {
+    const res = await fetch("http://127.0.0.1:8765/tts?lang=" + encodeURIComponent(base) +
+                            "&text=" + encodeURIComponent(text));
+    if (res.ok) {
+      const blob = await res.blob();
+      playBlob(blob);
+      return;
+    }
+  } catch(e){ /* helper not running */ }
+  // 2) Google online TTS (media element — no CORS needed; blocked by CORS via fetch)
+  try {
+    const url = "https://translate.google.com/translate_tts?ie=UTF-8&q=" +
+      encodeURIComponent(text) + "&tl=" + encodeURIComponent(base) + "&client=tw-ob";
+    const probe = await fetch(url, { method: "HEAD", mode: "no-cors" }).catch(() => null);
+    if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
+    onlineAudio = new Audio(url);
+    onlineAudio.play().catch(() => {});
+    return;
+  } catch(e){
+    const fb = $("feedback");
+    if (fb) { fb.textContent = "no voice for " + lang + " — run tts-server.cmd for native audio"; fb.className = ""; }
+  }
+}
+function playBlob(blob){
+  if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
+  onlineAudio = new Audio(URL.createObjectURL(blob));
+  onlineAudio.play().catch(() => {});
+}
+function stopSpeaking(){
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
+}
 function toggleSound(){
   S.sound = !S.sound; saveSettings();
   $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
@@ -360,8 +471,9 @@ $("micbtn").onclick = (e) => { e.stopPropagation(); startVoice(); };
 
 function norm(s){
   return (s || "").toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")   // strip accents
-    .replace(/[¿?¡!.,;:"']/g, "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")   // strip Latin accents
+    .replace(/[\u064B-\u0652\u0670\u0640\u200C]/g, "")  // strip Arabic harakat, tatweel, ZWNJ
+    .replace(/[¿?¡!.,;:"'،؛؟]/g, "")
     .replace(/\b(el|la|los|las|le|la|un|una|der|die|das|l|le|la|a|the)\b/g, " ")
     .replace(/\s+/g, " ").trim();
 }
@@ -403,7 +515,7 @@ function gradeVoice(alts){
 $("settingsbtn").onclick = () => { $("settings").style.display = $("settings").style.display === "block" ? "none" : "block"; };
 $("settings").addEventListener("click", (e) => { if (e.target.id === "settings") $("settings").style.display = "none"; });
 const NUMKEYS = ["s_word","s_phrase","s_sentence","s_reveal","s_chars","s_mult","s_count"];
-const CHKKEYS = ["s_tts_native","s_tts_target","s_shuffle","s_weight"];
+const CHKKEYS = ["s_tts_native","s_tts_target","s_shuffle","s_weight","s_tts_fallback"];
 function pushSettingsToUI(){
   for (const k of NUMKEYS) $(k).value = S[k];
   for (const k of CHKKEYS) $(k).checked = !!S[k];

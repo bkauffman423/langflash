@@ -472,7 +472,8 @@ $("micbtn").onclick = (e) => { e.stopPropagation(); startVoice(); };
 function norm(s){
   return (s || "").toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")   // strip Latin accents
-    .replace(/[\u064B-\u0652\u0670\u0640\u200C]/g, "")  // strip Arabic harakat, tatweel, ZWNJ
+    .replace(/[\u064B-\u0652\u0670\u0640]/g, "")  // strip Arabic harakat + tatweel
+    .replace(/\u200C/g, " ")                       // ZWNJ (نمی‌شوم) → word boundary
     .replace(/[¿?¡!.,;:"'،؛؟]/g, "")
     .replace(/\b(el|la|los|las|le|la|un|una|der|die|das|l|le|la|a|the)\b/g, " ")
     .replace(/\s+/g, " ").trim();

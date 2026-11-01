@@ -717,6 +717,8 @@ $("s_voice").addEventListener("change", () => { S.s_voice = $("s_voice").value; 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 /* ---------- boot ---------- */
+const BUILD = "20261101d";
+{ const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();
 loadDecks();

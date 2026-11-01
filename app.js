@@ -201,7 +201,7 @@ function updateDeckMeta(){
 
 /* ---------- classes & lessons ---------- */
 const FALLBACK_CLASSES = [
-  {id: "fa-isc", name: "Class-e Farsi ISC", lessons: [
+  {id: "fa-isc", name: "ISC Class-e Farsi", lessons: [
     {id: "intro-verbs", title: "Introductory verbs", date: "2026-10-31", file: "fa-lesson-intro-verbs.json"}
   ]}
 ];

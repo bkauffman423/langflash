@@ -229,6 +229,7 @@ async function loadClasses(){
     } catch(e){}
   }
   renderClasses();
+  routeHash();   // honor #class/... deep links once classes+lessons are ready
 }
 
 function fmtDate(iso){
@@ -242,8 +243,19 @@ function renderClasses(){
   for (const cls of classes) {
     const card = document.createElement("div");
     card.className = "deckcard";
+    const trow = document.createElement("div");
+    trow.className = "trow";
+    const t = document.createElement("span");
+    t.className = "t";
+    t.textContent = "🎓 " + cls.name;
+    trow.appendChild(t);
+    trow.appendChild(mkShareBtn("Copy link to class", () => shareLink(shareUrl(cls.id), cls.name)));
+    card.appendChild(trow);
+    const m = document.createElement("div");
+    m.className = "m";
     const n = cls.lessons.length;
-    card.innerHTML = `<div class="t">🎓 ${esc(cls.name)}</div><div class="m">${n} lesson${n === 1 ? "" : "s"} — tap to open</div>`;
+    m.textContent = `${n} lesson${n === 1 ? "" : "s"} — tap to open`;
+    card.appendChild(m);
     const panel = document.createElement("div");
     panel.style.display = "none";
     // newest lesson first
@@ -260,13 +272,83 @@ function renderClasses(){
       b.onclick = (e) => { e.stopPropagation(); openLesson(cls, l); };
       row.appendChild(date);
       row.appendChild(b);
+      row.appendChild(mkShareBtn("Copy link to lesson", () => shareLink(shareUrl(cls.id, l.id), l.title)));
       panel.appendChild(row);
     }
-    card.onclick = () => { panel.style.display = panel.style.display === "none" ? "block" : "none"; };
+    card.onclick = () => togglePanel(cls.id);
     el.appendChild(card);
     el.appendChild(panel);
+    classUI[cls.id] = { card, panel };
   }
 }
+
+/* ---------- direct links & sharing ----------
+   Links are built from stable ids, never titles — titles are cosmetic and
+   renameable; ids decide what a link means. Lesson ids are namespaced under
+   their class, so identical titles across (or within) classes never collide. */
+const classUI = {};   // clsId -> {card, panel}
+
+function togglePanel(clsId){
+  const u = classUI[clsId];
+  if (u) u.panel.style.display = u.panel.style.display === "none" ? "block" : "none";
+}
+function openClassPanel(clsId){
+  const u = classUI[clsId];
+  if (u) { u.panel.style.display = "block"; u.card.scrollIntoView({ block: "nearest" }); }
+}
+function shareUrl(clsId, lessonId){
+  const base = location.origin + location.pathname;
+  return lessonId ? `${base}#class/${clsId}/lesson/${lessonId}` : `${base}#class/${clsId}`;
+}
+function mkShareBtn(title, fn){
+  const s = document.createElement("button");
+  s.className = "sharebtn";
+  s.title = title;
+  s.textContent = "🔗 Share";
+  s.onclick = (e) => { e.stopPropagation(); fn(); };
+  return s;
+}
+async function shareLink(url, label){
+  const fb = $("homehint");
+  if (navigator.share) {
+    try { await navigator.share({ title: "LangFlash — " + label, url }); return; }
+    catch(e) { if (e && e.name === "AbortError") return; }   // cancelled, or share unsupported
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    fb.textContent = "Link copied — " + label;
+  } catch(e) {
+    const ta = document.createElement("textarea");
+    ta.value = url;
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch(_){}
+    document.body.removeChild(ta);
+    fb.textContent = ok ? "Link copied — " + label : url;
+  }
+}
+function parseHash(){
+  const m = location.hash.match(/^#class\/([^/]+)(?:\/lesson\/([^/]+))?$/);
+  return m ? { cls: decodeURIComponent(m[1]), lesson: m[2] ? decodeURIComponent(m[2]) : null } : null;
+}
+function routeHash(){
+  const r = parseHash();
+  if (!r) return;
+  const cls = classes.find(c => c.id === r.cls);
+  if (!cls) return;                       // unknown id: normal dashboard, no error page
+  if (r.lesson) {
+    const l = cls.lessons.find(x => x.id === r.lesson);
+    if (l) openLesson(cls, l);            // straight into the cards
+    return;
+  }
+  openClassPanel(cls.id);                 // dashboard with class expanded
+}
+window.addEventListener("hashchange", () => {
+  if (!parseHash()) goHome();
+  else routeHash();
+});
 
 function openLesson(cls, l){
   const d = lessonDecks[l.id];
@@ -425,6 +507,8 @@ function goHome(){
   $("session").style.display = "none"; $("endcard").style.display = "none";
   $("home").style.display = "block"; $("homebtn").style.display = "none";
   $("hdrdeck").textContent = "";
+  // leaving a deep link: drop the hash so a reload lands on the dashboard
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
 }
 $("homebtn").onclick = goHome;
 $("againbtn").onclick = () => startSession(deck);

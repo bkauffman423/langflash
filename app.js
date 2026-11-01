@@ -178,16 +178,105 @@ async function loadDecks(){
 function kindOf(it){ return it.kind || (it.front.split(/\s+/).length >= 4 ? "sentence" : it.front.split(/\s+/).length >= 2 ? "phrase" : "word"); }
 
 function renderDeckList(){
-  const el = $("decklist"); el.innerHTML = "";
-  for (const d of decks) {
-    const c = document.createElement("div");
-    c.className = "deckcard";
-    const counts = {word:0, phrase:0, sentence:0};
-    d.items.forEach(it => counts[kindOf(it)]++);
-    c.innerHTML = `<div class="t">${esc(d.name)}</div><div class="m">${d.native} → ${d.target} · ${d.items.length} cards (${counts.word} words, ${counts.phrase} phrases, ${counts.sentence} sentences)</div>`;
-    c.onclick = () => startSession(d);
-    el.appendChild(c);
+  const sel = $("langsel");
+  sel.innerHTML = "";
+  decks.forEach((d, i) => {
+    const o = document.createElement("option");
+    o.value = i;
+    o.textContent = d.name;
+    sel.appendChild(o);
+  });
+  updateDeckMeta();
+  sel.onchange = updateDeckMeta;
+  $("startbtn").onclick = () => { if (decks.length) startSession(decks[sel.value]); };
+}
+
+function updateDeckMeta(){
+  const d = decks[$("langsel").value];
+  if (!d) return;
+  const counts = {word:0, phrase:0, sentence:0};
+  d.items.forEach(it => counts[kindOf(it)]++);
+  $("deckmeta").textContent = `${d.native} → ${d.target} · ${d.items.length} cards (${counts.word} words, ${counts.phrase} phrases, ${counts.sentence} sentences)`;
+}
+
+/* ---------- classes & lessons ---------- */
+const FALLBACK_CLASSES = [
+  {id: "fa-isc", name: "Class-e Farsi ISC", lessons: [
+    {id: "intro-verbs", title: "Introductory verbs", date: "2026-10-31", file: "fa-lesson-intro-verbs.json"}
+  ]}
+];
+let classes = [];
+const lessonDecks = {};   // lesson id -> loaded deck
+
+async function loadClasses(){
+  try {
+    const res = await fetch("data/classes.json?t=" + Date.now());
+    if (res.ok) classes = await res.json();
+  } catch(e){ /* file:// */ }
+  if (!classes.length) {
+    try {
+      const x = new XMLHttpRequest();
+      x.open("GET", "data/classes.json", false);
+      x.send();
+      if (x.status === 0 || x.status === 200) classes = JSON.parse(x.responseText);
+    } catch(e){}
   }
+  if (!classes.length) classes = FALLBACK_CLASSES;
+  for (const cls of classes) for (const l of cls.lessons) {
+    try {
+      const r = await fetch(`data/decks/${l.file}?t=` + Date.now());
+      if (r.ok) lessonDecks[l.id] = await r.json();
+    } catch(e){}
+  }
+  renderClasses();
+}
+
+function fmtDate(iso){
+  const [y, m, d] = iso.split("-");
+  return `${+m}/${+d}/${y}`;
+}
+
+function renderClasses(){
+  const el = $("classlist");
+  el.innerHTML = "";
+  for (const cls of classes) {
+    const card = document.createElement("div");
+    card.className = "deckcard";
+    const n = cls.lessons.length;
+    card.innerHTML = `<div class="t">🎓 ${esc(cls.name)}</div><div class="m">${n} lesson${n === 1 ? "" : "s"} — tap to open</div>`;
+    const panel = document.createElement("div");
+    panel.style.display = "none";
+    // newest lesson first
+    const lessons = [...cls.lessons].sort((a, b) => b.date.localeCompare(a.date));
+    for (const l of lessons) {
+      const row = document.createElement("div");
+      row.className = "lessonrow";
+      const date = document.createElement("span");
+      date.className = "lessondate";
+      date.textContent = fmtDate(l.date);
+      const b = document.createElement("button");
+      b.className = "lessonbtn";
+      b.textContent = l.title;
+      b.onclick = (e) => { e.stopPropagation(); openLesson(cls, l); };
+      row.appendChild(date);
+      row.appendChild(b);
+      panel.appendChild(row);
+    }
+    card.onclick = () => { panel.style.display = panel.style.display === "none" ? "block" : "none"; };
+    el.appendChild(card);
+    el.appendChild(panel);
+  }
+}
+
+function openLesson(cls, l){
+  const d = lessonDecks[l.id];
+  if (!d || !d.items.length) {
+    $("homehint").textContent = `"${l.title}" has no cards yet — lesson content coming soon.`;
+    return;
+  }
+  $("homehint").textContent = "";
+  d.name = `${l.title} · ${cls.name}`;
+  startSession(d);
 }
 
 /* ---------- session engine ---------- */
@@ -547,4 +636,5 @@ function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();
 loadDecks();
+loadClasses();
 if (window.matchMedia && matchMedia("(display-mode: standalone)").matches) document.body.classList.add("installed");

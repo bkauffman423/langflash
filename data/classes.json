@@ -1,0 +1,14 @@
+[
+  {
+    "id": "fa-isc",
+    "name": "Class-e Farsi ISC",
+    "lessons": [
+      {
+        "id": "intro-verbs",
+        "title": "Introductory verbs",
+        "date": "2026-10-31",
+        "file": "fa-lesson-intro-verbs.json"
+      }
+    ]
+  }
+]

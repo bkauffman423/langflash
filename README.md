@@ -62,3 +62,12 @@ JSON file in `data/decks/` and listing it in `manifest.json`.
 - External data sources for decks (CSV/Anki import, dictionary APIs, image lookup) — the deck-JSON boundary is already the seam.
 - Spaced repetition (SM-2) on top of the existing per-card stats.
 - Offline caching (service worker) once decks are hosted.
+
+## Classes & lessons
+
+`data/classes.json` defines classes (e.g. **Class-e Farsi ISC**), each with an
+ordered list of lessons. Home shows a **Classes** section: tapping a class
+reveals its lessons newest-first as `date → lesson button`. Each lesson points
+at a deck file in `data/decks/` (`file` field); an empty lesson shows a
+"coming soon" hint. Add a lesson by appending to `data/classes.json` and
+creating its deck JSON.

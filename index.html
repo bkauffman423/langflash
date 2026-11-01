@@ -37,6 +37,18 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .deckcard:hover{border-color:var(--accent)}
 .deckcard .t{font-weight:600}
 .deckcard .m{color:var(--dim);font-size:12.5px;margin-top:2px}
+.sec{font-size:12.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.sec.spacer{margin-top:24px}
+.langrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.langrow select{flex:1;max-width:280px;background:var(--card2);border:1px solid var(--line);color:var(--fg);
+  border-radius:8px;padding:9px 10px;font-size:14px}
+.lessonrow{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:9px 12px;margin-top:8px;margin-left:14px}
+.lessondate{color:var(--dim);font-size:12.5px;min-width:78px}
+.lessonbtn{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--fg);border-radius:8px;
+  padding:9px 11px;font-size:13.5px;cursor:pointer;text-align:left;font-weight:600}
+.lessonbtn:hover{border-color:var(--accent)}
+.homehint{color:var(--warn);font-size:12.5px;margin-top:8px;min-height:16px}
 .modes{display:flex;gap:8px;margin:14px 0}
 .modebtn{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 6px;
   color:var(--fg);font-size:13.5px;cursor:pointer;text-align:center}
@@ -112,7 +124,19 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
         <button class="modebtn" data-mode="auto">Auto<small>timed show &amp; reveal</small></button>
         <button class="modebtn" data-mode="voice">Voice quiz<small>say it, get scored</small></button>
       </div>
-      <div id="decklist"></div>
+      <div class="sec">Language</div>
+      <div class="deckcard" style="cursor:default">
+        <div class="langrow">
+          <label for="langsel" style="font-weight:600">Target language</label>
+          <select id="langsel"></select>
+        </div>
+        <div class="m" id="deckmeta"></div>
+      </div>
+      <button class="startbtn" id="startbtn">Start flashcards</button>
+
+      <div class="sec spacer">Classes</div>
+      <div id="classlist"></div>
+      <div class="homehint" id="homehint"></div>
     </section>
 
     <section id="session">
@@ -162,6 +186,6 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
     </div></div>
   </main>
 </div>
-<script src="app.js?v=20261031a"></script>
+<script src="app.js?v=20261101a"></script>
 </body>
 </html>

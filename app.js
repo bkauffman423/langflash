@@ -386,24 +386,13 @@ function speak(text, lang){
     }
   }
   // No matching voice: speaking foreign text with an English voice mangles it.
-  // Fallback chain: local Edge-TTS helper (best; native neural voices incl. Farsi)
-  // → Google online TTS (no Farsi voice, works for most others).
+  // Fallback: Google online TTS (no Farsi voice, works for most others).
   if (S.s_tts_fallback !== false) speakFallback(text, meta.tts);
 }
 let onlineAudio = null;
 async function speakFallback(text, lang){
   const base = lang.split("-")[0];
-  // 1) local helper: python tts_server.py (see tts-server.cmd) — Edge neural voices
-  try {
-    const res = await fetch("http://127.0.0.1:8765/tts?lang=" + encodeURIComponent(base) +
-                            "&text=" + encodeURIComponent(text));
-    if (res.ok) {
-      const blob = await res.blob();
-      playBlob(blob);
-      return;
-    }
-  } catch(e){ /* helper not running */ }
-  // 2) Google online TTS (media element — no CORS needed; blocked by CORS via fetch)
+  // Google online TTS (media element — no CORS needed; blocked by CORS via fetch)
   try {
     const url = "https://translate.google.com/translate_tts?ie=UTF-8&q=" +
       encodeURIComponent(text) + "&tl=" + encodeURIComponent(base) + "&client=tw-ob";
@@ -414,13 +403,8 @@ async function speakFallback(text, lang){
     return;
   } catch(e){
     const fb = $("feedback");
-    if (fb) { fb.textContent = "no voice for " + lang + " — run tts-server.cmd for native audio"; fb.className = ""; }
+    if (fb) { fb.textContent = "no voice for " + lang + " — install its system voice or connect to internet"; fb.className = ""; }
   }
-}
-function playBlob(blob){
-  if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
-  onlineAudio = new Audio(URL.createObjectURL(blob));
-  onlineAudio.play().catch(() => {});
 }
 function stopSpeaking(){
   if (window.speechSynthesis) speechSynthesis.cancel();

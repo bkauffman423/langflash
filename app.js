@@ -371,6 +371,46 @@ function pickVoice(lang){
       || voices().find(v => v.lang && v.lang.toLowerCase().startsWith(base))
       || null;
 }
+/* ---------- online/bundled audio (gesture-unlocked) ----------
+   Chrome-family autoplay policy: <audio>.play() rejects with NotAllowedError
+   unless a user gesture happened first. speechSynthesis is exempt, so tier-1
+   (system voices) never needed one; bundled clips (Farsi) and Google fallback
+   do — fatal in auto mode, where reveals are timer-driven with no gesture.
+   Fix: unlock the shared audio element on the first touch/click anywhere by
+   playing a silent clip; later programmatic playback on that element is then
+   allowed for the rest of the session. */
+let onlineAudio = null;
+let audioUnlocked = false;
+const SILENT_WAV = "data:audio/wav;base64,UklGRjQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YRAAAAAAAAAAAAAAAAAAAA==";
+function ensureAudioEl(){
+  if (!onlineAudio) {
+    onlineAudio = new Audio();
+    onlineAudio.addEventListener("error", () => {
+      const fb = $("feedback");
+      if (fb && onlineAudio && onlineAudio.src && !/wav;base64/.test(onlineAudio.src)) {
+        fb.textContent = "could not play audio for this card"; fb.className = "";
+      }
+    });
+  }
+  return onlineAudio;
+}
+function unlockAudio(){
+  if (audioUnlocked) return;
+  const a = ensureAudioEl();
+  a.src = SILENT_WAV;
+  const p = a.play();
+  if (p && p.then) p.then(() => { audioUnlocked = true; a.pause(); }).catch(() => {});
+}
+document.addEventListener("pointerdown", unlockAudio, {capture: true, passive: true});
+function playUrl(url){
+  const a = ensureAudioEl();
+  try { a.pause(); } catch(e){}
+  a.src = url;
+  a.play().then(() => { audioUnlocked = true; }).catch(() => {
+    const fb = $("feedback");
+    if (fb) { fb.textContent = "audio blocked — tap the screen once and press 🔊 twice to replay"; fb.className = ""; }
+  });
+}
 function speak(text, lang, audioUrl){
   if (!S.sound || !text) return;
   const meta = langMeta(lang);
@@ -391,27 +431,11 @@ function speak(text, lang, audioUrl){
   if (audioUrl) { playUrl(audioUrl); return; }
   if (S.s_tts_fallback !== false) speakFallback(text, meta.tts);
 }
-function playUrl(url){
-  if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
-  onlineAudio = new Audio(url);
-  onlineAudio.play().catch(() => {});
-}
-let onlineAudio = null;
 async function speakFallback(text, lang){
   const base = lang.split("-")[0];
   // Google online TTS (media element — no CORS needed; blocked by CORS via fetch)
-  try {
-    const url = "https://translate.google.com/translate_tts?ie=UTF-8&q=" +
-      encodeURIComponent(text) + "&tl=" + encodeURIComponent(base) + "&client=tw-ob";
-    const probe = await fetch(url, { method: "HEAD", mode: "no-cors" }).catch(() => null);
-    if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
-    onlineAudio = new Audio(url);
-    onlineAudio.play().catch(() => {});
-    return;
-  } catch(e){
-    const fb = $("feedback");
-    if (fb) { fb.textContent = "no voice for " + lang + " — install its system voice or connect to internet"; fb.className = ""; }
-  }
+  playUrl("https://translate.google.com/translate_tts?ie=UTF-8&q=" +
+    encodeURIComponent(text) + "&tl=" + encodeURIComponent(base) + "&client=tw-ob");
 }
 function stopSpeaking(){
   if (window.speechSynthesis) speechSynthesis.cancel();

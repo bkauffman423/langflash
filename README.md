@@ -19,7 +19,7 @@ python serve.py            # http://127.0.0.1:8123/index.html
 - **Visuals:** each card can carry an emoji or an image (`"img": "url-or-path"` in the deck JSON).
 - **Auto mode:** no interaction needed — word displays, auto-reveals the translation after a timed beat, advances. Timings adjustable per kind (word/phrase/sentence) plus auto-scaling for text length and TTS length.
 - **TTS:** speaks the native word on display and the translation on reveal — always in the *right language*. The app picks a system voice matching the deck's target language (Spanish card → Spanish voice). If no matching voice is installed, it will NOT read the foreign text with an English voice; instead it falls back to Google's online TTS (needs internet; no Farsi voice). A manual voice choice in settings only applies when its language matches the text being spoken.
-- **Farsi (Persian):** deck `fa-core` (target `fa`). Answers render in Persian script (RTL) **plus romanization ("Fenglish")** below. Audio uses the device's own Farsi voice: Android has one built in (Google TTS); iOS users may need to download it under Settings → Accessibility → Spoken Content → Voices. Google's online TTS has no Farsi voice, so a Windows machine without a fa voice will show a hint instead of speaking with a wrong-language voice.
+- **Farsi (Persian):** deck `fa-core` (target `fa`). Answers render in Persian script (RTL) **plus romanization ("Fenglish")** below. Audio: if the device has a system Farsi voice, the app uses it; otherwise it plays **bundled MP3s** (`data/audio/fa/`, pre-generated once with Microsoft's fa-IR-DilaraNeural neural voice and shipped in the repo) — so Farsi speaks on every platform with nothing to install. Google's online TTS has no Farsi voice at all, which is why the deck carries its own audio.
 - **Voice quiz mode:** you say the translation aloud; speech recognition scores it (accent-insensitive fuzzy match) and tells you ✓/✗.
 - **Weighted repeats:** cards you miss in voice mode come back more often in later sessions (localStorage stats).
 - Keys: `space` reveal/next · `m` mute · `Esc` home.
@@ -39,10 +39,12 @@ python serve.py            # http://127.0.0.1:8123/index.html
 }
 ```
 
-For non-Latin targets add `"roman"` (romanization shown under the answer):
+For non-Latin targets add `"roman"` (romanization shown under the answer);
+`"audio"` (path to a pre-generated clip) makes the card speak on devices with no
+system voice for the target language:
 
 ```json
-{"front": "water", "back": "آب", "roman": "âb", "emoji": "💧"}
+{"front": "water", "back": "آب", "roman": "âb", "emoji": "💧", "audio": "data/audio/fa/fa-01.mp3"}
 ```
 
 `kind` is optional (auto-detected from word count). Add a deck by dropping a

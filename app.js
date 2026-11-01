@@ -89,38 +89,38 @@ const FALLBACK_DECKS = [
   {
     id: "fa-core", name: "Farsi (Persian) — core 30", native: "en", target: "fa",
     items: [
-      {front:"apple", back:"سیب", roman:"sib", emoji:"🍎"},
-      {front:"water", back:"آب", roman:"âb", emoji:"💧"},
-      {front:"to eat", back:"خوردن", roman:"khordan", emoji:"🍽️"},
-      {front:"to drink", back:"نوشیدن", roman:"nooshidan", emoji:"🥤"},
-      {front:"dog", back:"سگ", roman:"sag", emoji:"🐕"},
-      {front:"cat", back:"گربه", roman:"gorbe", emoji:"🐈"},
-      {front:"house", back:"خانه", roman:"khane", emoji:"🏠"},
-      {front:"car", back:"ماشین", roman:"mashin", emoji:"🚗"},
-      {front:"book", back:"کتاب", roman:"ketab", emoji:"📖"},
-      {front:"friend", back:"دوست", roman:"doost", emoji:"🧑‍🤝‍🧑"},
-      {front:"bread", back:"نان", roman:"nan", emoji:"🍞"},
-      {front:"milk", back:"شیر", roman:"shir", emoji:"🥛"},
-      {front:"coffee", back:"قهوه", roman:"ghahve", emoji:"☕"},
-      {front:"night", back:"شب", roman:"shab", emoji:"🌙"},
-      {front:"day", back:"روز", roman:"rooz", emoji:"☀️"},
-      {front:"to work", back:"کار کردن", roman:"kar kardan", emoji:"💼"},
-      {front:"to sleep", back:"خوابیدن", roman:"khabidan", emoji:"😴"},
-      {front:"big", back:"بزرگ", roman:"bozorg", emoji:"➕"},
-      {front:"small", back:"کوچک", roman:"koochak", emoji:"➖"},
-      {front:"fast", back:"سریع", roman:"sari'", emoji:"⚡"},
-      {front:"slow", back:"آهسته", roman:"âhaste", emoji:"🐢"},
-      {front:"the weather", back:"هوا", roman:"hava", emoji:"🌦️"},
-      {front:"money", back:"پول", roman:"pool", emoji:"💰"},
-      {front:"street", back:"خیابان", roman:"khiyaban", emoji:"🛣️"},
-      {front:"good morning", back:"صبح بخیر", roman:"sobh bekheir", kind:"phrase", emoji:"🌄"},
-      {front:"thank you", back:"ممنون", roman:"mamnun", kind:"phrase", emoji:"🙏"},
-      {front:"please", back:"لطفاً", roman:"lotfan", kind:"phrase", emoji:"🙏"},
-      {front:"how much?", back:"چقدر؟", roman:"cheghadr?", kind:"phrase", emoji:"💶"},
-      {front:"goodbye", back:"خداحافظ", roman:"khodahafez", kind:"phrase", emoji:"👋"},
-      {front:"I don't understand", back:"متوجه نمی‌شوم", roman:"mutavajje nemisham", kind:"sentence", emoji:"🤷"},
-      {front:"Where is the station?", back:"ایستگاه کجاست؟", roman:"istgah kojast?", kind:"sentence", emoji:"🚉"},
-      {front:"I would like a coffee", back:"یک قهوه می‌خواهم", roman:"yek ghahve mikhaham", kind:"sentence", emoji:"☕"}
+      {front:"apple", back:"سیب", roman:"sib", emoji:"🍎", audio:"data/audio/fa/fa-00.mp3"},
+      {front:"water", back:"آب", roman:"âb", emoji:"💧", audio:"data/audio/fa/fa-01.mp3"},
+      {front:"to eat", back:"خوردن", roman:"khordan", emoji:"🍽️", audio:"data/audio/fa/fa-02.mp3"},
+      {front:"to drink", back:"نوشیدن", roman:"nooshidan", emoji:"🥤", audio:"data/audio/fa/fa-03.mp3"},
+      {front:"dog", back:"سگ", roman:"sag", emoji:"🐕", audio:"data/audio/fa/fa-04.mp3"},
+      {front:"cat", back:"گربه", roman:"gorbe", emoji:"🐈", audio:"data/audio/fa/fa-05.mp3"},
+      {front:"house", back:"خانه", roman:"khane", emoji:"🏠", audio:"data/audio/fa/fa-06.mp3"},
+      {front:"car", back:"ماشین", roman:"mashin", emoji:"🚗", audio:"data/audio/fa/fa-07.mp3"},
+      {front:"book", back:"کتاب", roman:"ketab", emoji:"📖", audio:"data/audio/fa/fa-08.mp3"},
+      {front:"friend", back:"دوست", roman:"doost", emoji:"🧑‍🤝‍🧑", audio:"data/audio/fa/fa-09.mp3"},
+      {front:"bread", back:"نان", roman:"nan", emoji:"🍞", audio:"data/audio/fa/fa-10.mp3"},
+      {front:"milk", back:"شیر", roman:"shir", emoji:"🥛", audio:"data/audio/fa/fa-11.mp3"},
+      {front:"coffee", back:"قهوه", roman:"ghahve", emoji:"☕", audio:"data/audio/fa/fa-12.mp3"},
+      {front:"night", back:"شب", roman:"shab", emoji:"🌙", audio:"data/audio/fa/fa-13.mp3"},
+      {front:"day", back:"روز", roman:"rooz", emoji:"☀️", audio:"data/audio/fa/fa-14.mp3"},
+      {front:"to work", back:"کار کردن", roman:"kar kardan", emoji:"💼", audio:"data/audio/fa/fa-15.mp3"},
+      {front:"to sleep", back:"خوابیدن", roman:"khabidan", emoji:"😴", audio:"data/audio/fa/fa-16.mp3"},
+      {front:"big", back:"بزرگ", roman:"bozorg", emoji:"➕", audio:"data/audio/fa/fa-17.mp3"},
+      {front:"small", back:"کوچک", roman:"koochak", emoji:"➖", audio:"data/audio/fa/fa-18.mp3"},
+      {front:"fast", back:"سریع", roman:"sari'", emoji:"⚡", audio:"data/audio/fa/fa-19.mp3"},
+      {front:"slow", back:"آهسته", roman:"âhaste", emoji:"🐢", audio:"data/audio/fa/fa-20.mp3"},
+      {front:"the weather", back:"هوا", roman:"hava", emoji:"🌦️", audio:"data/audio/fa/fa-21.mp3"},
+      {front:"money", back:"پول", roman:"pool", emoji:"💰", audio:"data/audio/fa/fa-22.mp3"},
+      {front:"street", back:"خیابان", roman:"khiyaban", emoji:"🛣️", audio:"data/audio/fa/fa-23.mp3"},
+      {front:"good morning", back:"صبح بخیر", roman:"sobh bekheir", kind:"phrase", emoji:"🌄", audio:"data/audio/fa/fa-24.mp3"},
+      {front:"thank you", back:"ممنون", roman:"mamnun", kind:"phrase", emoji:"🙏", audio:"data/audio/fa/fa-25.mp3"},
+      {front:"please", back:"لطفاً", roman:"lotfan", kind:"phrase", emoji:"🙏", audio:"data/audio/fa/fa-26.mp3"},
+      {front:"how much?", back:"چقدر؟", roman:"cheghadr?", kind:"phrase", emoji:"💶", audio:"data/audio/fa/fa-27.mp3"},
+      {front:"goodbye", back:"خداحافظ", roman:"khodahafez", kind:"phrase", emoji:"👋", audio:"data/audio/fa/fa-28.mp3"},
+      {front:"I don't understand", back:"متوجه نمی‌شوم", roman:"mutavajje nemisham", kind:"sentence", emoji:"🤷", audio:"data/audio/fa/fa-29.mp3"},
+      {front:"Where is the station?", back:"ایستگاه کجاست؟", roman:"istgah kojast?", kind:"sentence", emoji:"🚉", audio:"data/audio/fa/fa-30.mp3"},
+      {front:"I would like a coffee", back:"یک قهوه می‌خواهم", roman:"yek ghahve mikhaham", kind:"sentence", emoji:"☕", audio:"data/audio/fa/fa-31.mp3"}
     ]
   }
 ];
@@ -278,7 +278,7 @@ function reveal(){
   ans.innerHTML = html;
   ans.style.display = "";
   $("tapcue").textContent = mode === "auto" ? "" : "tap anywhere for next";
-  if (S.s_tts_target) speak(it.back, deck.target);
+  if (S.s_tts_target) speak(it.back, deck.target, it.audio);
   if (mode === "auto") {
     phaseDur = revealSeconds(it) * 1000;
     startTimerBar();
@@ -371,7 +371,7 @@ function pickVoice(lang){
       || voices().find(v => v.lang && v.lang.toLowerCase().startsWith(base))
       || null;
 }
-function speak(text, lang){
+function speak(text, lang, audioUrl){
   if (!S.sound || !text) return;
   const meta = langMeta(lang);
   const v = pickVoice(meta.tts);
@@ -385,9 +385,16 @@ function speak(text, lang){
       return;
     }
   }
-  // No matching voice: speaking foreign text with an English voice mangles it.
-  // Fallback: Google online TTS (no Farsi voice, works for most others).
+  // No matching system voice: prefer deck-bundled audio (pre-generated, offline,
+  // e.g. Farsi), and only then the online fallback. Never let an English voice
+  // mangle foreign text.
+  if (audioUrl) { playUrl(audioUrl); return; }
   if (S.s_tts_fallback !== false) speakFallback(text, meta.tts);
+}
+function playUrl(url){
+  if (onlineAudio) { try { onlineAudio.pause(); } catch(e){} }
+  onlineAudio = new Audio(url);
+  onlineAudio.play().catch(() => {});
 }
 let onlineAudio = null;
 async function speakFallback(text, lang){
@@ -489,7 +496,7 @@ function gradeVoice(alts){
   fb.className = ok ? "good" : "bad";
   session.total++; session.correct += ok ? 1 : 0;
   session.results.push({idx: it.idx, front: it.front, back: it.back, ok});
-  if (ok && S.s_tts_target) speak(it.back, deck.target);
+  if (ok && S.s_tts_target) speak(it.back, deck.target, it.audio);
   timer = setTimeout(nextCard, ok ? 1200 : 2600);
 }
 

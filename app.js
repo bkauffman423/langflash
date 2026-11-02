@@ -403,7 +403,8 @@ function nextCard(){
   $("note").textContent = "";
   $("feedback").textContent = ""; $("feedback").className = "";
   $("counter").textContent = `${session.i + 1} / ${session.queue.length}`;
-  $("progress").style.width = (100 * session.i / session.queue.length) + "%";
+  const pf = $("progressfill");
+  if (pf) pf.style.width = (100 * (session.i + 1) / session.queue.length) + "%";
   $("voicebar").style.display = (mode === "voice") ? "flex" : "none";
   $("spoken").textContent = "tap mic and say it";
   $("tapcue").textContent = mode === "manual" ? "tap anywhere to reveal"
@@ -717,7 +718,7 @@ $("s_voice").addEventListener("change", () => { S.s_voice = $("s_voice").value; 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 /* ---------- boot ---------- */
-const BUILD = "20261101d";
+const BUILD = "20261101e";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

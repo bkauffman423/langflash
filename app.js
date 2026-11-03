@@ -138,7 +138,9 @@ let recognition = null;
 const DEFAULTS = {
   s_word: 4, s_phrase: 6, s_sentence: 9, s_reveal: 3, s_chars: 0.6, s_mult: 1,
   s_tts_native: true, s_tts_target: true, s_voice: "", s_tts_fallback: true,
-  s_count: 20, s_shuffle: true, s_weight: true, sound: true, s_dir: "n2t"
+  // s_dir "" = auto: Farsi decks practice target→English (Farsi first), all
+  // other decks English→target. Explicit selection in Settings overrides.
+  s_count: 20, s_shuffle: true, s_weight: true, sound: true, s_dir: ""
 };
 let S = {...DEFAULTS};
 try { Object.assign(S, JSON.parse(localStorage.getItem("langflash.settings") || "{}")); } catch(e){}
@@ -365,7 +367,7 @@ function openLesson(cls, l){
 function startSession(d){
   deck = d;
   let items = d.items.map((it, idx) => ({...it, idx}));
-  const sw = S.s_dir === "t2n";
+  const sw = effectiveDir(d) === "t2n";
   if (sw) items = items.map(it => ({...it, front: it.back, back: it.front}));
   if (S.s_shuffle) items.sort(() => Math.random() - 0.5);
   // weighted repeat: pull previously-missed cards in from localStorage stats
@@ -544,6 +546,7 @@ function isRtlDeck(){ return !!langMeta(deck && deck.target).rtl; }
 // prompts, answers, timers, grading and stats all follow automatically;
 // flipped() only re-routes language choices (TTS voice, RTL, mic language).
 function flipped(){ return !!(session && session.sw); }
+function effectiveDir(d){ return S.s_dir || (d.target === "fa" ? "t2n" : "n2t"); }
 
 /* ---------- TTS ---------- */
 function voices(){ return window.speechSynthesis ? speechSynthesis.getVoices() : []; }
@@ -725,7 +728,7 @@ const CHKKEYS = ["s_tts_native","s_tts_target","s_shuffle","s_weight","s_tts_fal
 function pushSettingsToUI(){
   for (const k of NUMKEYS) $(k).value = S[k];
   for (const k of CHKKEYS) $(k).checked = !!S[k];
-  $("s_dir").value = S.s_dir || "n2t";
+  $("s_dir").value = S.s_dir || "";
   populateVoices(); $("s_voice").value = S.s_voice || "";
 }
 for (const k of NUMKEYS) $(k).addEventListener("change", () => { S[k] = parseFloat($(k).value) || DEFAULTS[k]; saveSettings(); });
@@ -736,7 +739,7 @@ $("s_dir").addEventListener("change", () => { S.s_dir = $("s_dir").value; saveSe
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 /* ---------- boot ---------- */
-const BUILD = "20261103a";
+const BUILD = "20261103b";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

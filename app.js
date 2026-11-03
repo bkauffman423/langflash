@@ -138,7 +138,7 @@ let recognition = null;
 const DEFAULTS = {
   s_word: 4, s_phrase: 6, s_sentence: 9, s_reveal: 3, s_chars: 0.6, s_mult: 1,
   s_tts_native: true, s_tts_target: true, s_voice: "", s_tts_fallback: true,
-  s_count: 20, s_shuffle: true, s_weight: true, sound: true
+  s_count: 20, s_shuffle: true, s_weight: true, sound: true, s_dir: "n2t"
 };
 let S = {...DEFAULTS};
 try { Object.assign(S, JSON.parse(localStorage.getItem("langflash.settings") || "{}")); } catch(e){}
@@ -365,6 +365,8 @@ function openLesson(cls, l){
 function startSession(d){
   deck = d;
   let items = d.items.map((it, idx) => ({...it, idx}));
+  const sw = S.s_dir === "t2n";
+  if (sw) items = items.map(it => ({...it, front: it.back, back: it.front}));
   if (S.s_shuffle) items.sort(() => Math.random() - 0.5);
   // weighted repeat: pull previously-missed cards in from localStorage stats
   let stats = {};
@@ -379,10 +381,11 @@ function startSession(d){
     items.sort(() => Math.random() - 0.5);
   }
   const n = Math.min(S.s_count || 20, items.length);
-  session = { queue: items.slice(0, n), i: -1, correct: 0, total: 0, results: [] };
+  session = { queue: items.slice(0, n), i: -1, correct: 0, total: 0, results: [], sw };
   $("home").style.display = "none"; $("endcard").style.display = "none";
   $("session").style.display = "flex"; $("homebtn").style.display = "";
-  $("hdrdeck").textContent = d.name + " · " + (mode === "auto" ? "auto" : mode === "voice" ? "voice quiz" : "manual");
+  $("hdrdeck").textContent = d.name + " · " + (mode === "auto" ? "auto" : mode === "voice" ? "voice quiz" : "manual")
+    + (sw ? " · " + d.target.toUpperCase() + " → " + d.native.toUpperCase() : "");
   nextCard();
 }
 
@@ -396,8 +399,11 @@ function nextCard(){
   $("kind").textContent = k;
   const v = $("visual");
   v.innerHTML = it.img ? `<img src="${esc(it.img)}" alt="">` : (it.emoji ? esc(it.emoji) : "");
-  $("prompt").textContent = it.front;
-  $("prompt").style.display = "";
+  const pr = $("prompt");
+  pr.dir = (flipped() && isRtlDeck()) ? "rtl" : "ltr";
+  pr.innerHTML = esc(it.front)
+    + ((flipped() && it.roman) ? `<span class="roman">${esc(it.roman)}</span>` : "");
+  pr.style.display = "";
   $("hint").textContent = it.hint ? it.hint : "";
   $("answer").style.display = "none"; $("answer").innerHTML = "";
   $("note").textContent = "";
@@ -411,7 +417,8 @@ function nextCard(){
     : mode === "voice" ? "say the translation, or tap to reveal"
     : "auto mode — sit back";
 
-  if (S.s_tts_native) speak(it.front, deck.native);
+  if (S.s_tts_native) speak(it.front, flipped() ? deck.target : deck.native,
+    flipped() ? it.audio : undefined);
 
   if (mode === "auto") {
     phaseDur = showSeconds(it) * 1000;
@@ -440,17 +447,19 @@ function reveal(){
   if (phase !== "prompt") return;
   phase = "answer";
   const it = session.queue[session.i];
-  const rtl = isRtlDeck();
+  const rtl = isRtlDeck() && !flipped();
   const ans = $("answer");
   ans.classList.toggle("rtl", rtl);
   // target-script line (RTL isolated for Farsi), then romanization ("Fenglish"), then note
+  // (when direction is flipped the romanization rides under the Farsi prompt instead)
   let html = `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>`;
-  if (it.roman) html += `<span class="roman">${esc(it.roman)}</span>`;
+  if (it.roman && !flipped()) html += `<span class="roman">${esc(it.roman)}</span>`;
   if (it.note) html += `<span class="alt">${esc(it.note)}</span>`;
   ans.innerHTML = html;
   ans.style.display = "";
   $("tapcue").textContent = mode === "auto" ? "" : "tap anywhere for next";
-  if (S.s_tts_target) speak(it.back, deck.target, it.audio);
+  if (S.s_tts_target) speak(it.back, flipped() ? deck.native : deck.target,
+    flipped() ? undefined : it.audio);
   if (mode === "auto") {
     phaseDur = revealSeconds(it) * 1000;
     startTimerBar();
@@ -529,6 +538,12 @@ const LANGS = {
 };
 function langMeta(code){ return LANGS[code] || { name: code, tts: code }; }
 function isRtlDeck(){ return !!langMeta(deck && deck.target).rtl; }
+// Practice direction: "n2t" = prompt in native language (default, original
+// behavior); "t2n" = prompt in the target language (e.g. Farsi first, recall
+// the English meaning). The swap happens on the queue at session start, so
+// prompts, answers, timers, grading and stats all follow automatically;
+// flipped() only re-routes language choices (TTS voice, RTL, mic language).
+function flipped(){ return !!(session && session.sw); }
 
 /* ---------- TTS ---------- */
 function voices(){ return window.speechSynthesis ? speechSynthesis.getVoices() : []; }
@@ -639,7 +654,7 @@ function startVoice(){
   if (!SR) { $("spoken").textContent = "voice recognition not supported in this browser"; return; }
   if (recognition) { recognition.abort(); recognition = null; }
   recognition = new SR();
-  recognition.lang = deck.target;
+  recognition.lang = flipped() ? deck.native : deck.target;
   recognition.interimResults = false;
   recognition.maxAlternatives = 3;
   $("micbtn").classList.add("listening");
@@ -694,7 +709,8 @@ function gradeVoice(alts){
   fb.className = ok ? "good" : "bad";
   session.total++; session.correct += ok ? 1 : 0;
   session.results.push({idx: it.idx, front: it.front, back: it.back, ok});
-  if (ok && S.s_tts_target) speak(it.back, deck.target, it.audio);
+  if (ok && S.s_tts_target) speak(it.back, flipped() ? deck.native : deck.target,
+    flipped() ? undefined : it.audio);
   timer = setTimeout(nextCard, ok ? 1200 : 2600);
 }
 
@@ -709,16 +725,18 @@ const CHKKEYS = ["s_tts_native","s_tts_target","s_shuffle","s_weight","s_tts_fal
 function pushSettingsToUI(){
   for (const k of NUMKEYS) $(k).value = S[k];
   for (const k of CHKKEYS) $(k).checked = !!S[k];
+  $("s_dir").value = S.s_dir || "n2t";
   populateVoices(); $("s_voice").value = S.s_voice || "";
 }
 for (const k of NUMKEYS) $(k).addEventListener("change", () => { S[k] = parseFloat($(k).value) || DEFAULTS[k]; saveSettings(); });
 for (const k of CHKKEYS) $(k).addEventListener("change", () => { S[k] = $(k).checked; saveSettings(); });
 $("s_voice").addEventListener("change", () => { S.s_voice = $("s_voice").value; saveSettings(); });
+$("s_dir").addEventListener("change", () => { S.s_dir = $("s_dir").value; saveSettings(); });
 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 /* ---------- boot ---------- */
-const BUILD = "20261101e";
+const BUILD = "20261103a";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

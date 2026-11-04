@@ -1,0 +1,818 @@
+{
+  "id": "fa-lesson-conj-past",
+  "name": "Conjugation past tense",
+  "native": "en",
+  "target": "fa",
+  "items": [
+    {
+      "front": "I ate",
+      "back": "خوردم",
+      "roman": "Man Khordam",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/conj-past/cp-00.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You ate",
+      "back": "خوردی",
+      "roman": "To Khordi",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/conj-past/cp-01.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} ate",
+      "back": "خورد",
+      "roman": "Ou Khord",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/conj-past/cp-02.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We ate",
+      "back": "خوردیم",
+      "roman": "Ma Khordim",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/conj-past/cp-03.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all ate",
+      "back": "خوردید",
+      "roman": "Shoma Khordid",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/conj-past/cp-04.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They ate",
+      "back": "خوردند",
+      "roman": "Anha Khordand",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/conj-past/cp-05.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I read",
+      "back": "خواندم",
+      "roman": "Man Khandam",
+      "emoji": "📖",
+      "audio": "data/audio/fa/conj-past/cp-06.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You read",
+      "back": "خواندی",
+      "roman": "To Khandi",
+      "emoji": "📖",
+      "audio": "data/audio/fa/conj-past/cp-07.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} read",
+      "back": "خواند",
+      "roman": "Ou Khand",
+      "emoji": "📖",
+      "audio": "data/audio/fa/conj-past/cp-08.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We read",
+      "back": "خواندیم",
+      "roman": "Ma Khandim",
+      "emoji": "📖",
+      "audio": "data/audio/fa/conj-past/cp-09.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all read",
+      "back": "خواندید",
+      "roman": "Shoma Khandid",
+      "emoji": "📖",
+      "audio": "data/audio/fa/conj-past/cp-10.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They read",
+      "back": "خواندند",
+      "roman": "Anha Khandand",
+      "emoji": "📖",
+      "audio": "data/audio/fa/conj-past/cp-11.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I wrote",
+      "back": "نوشتم",
+      "roman": "Man Neveshtam",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/conj-past/cp-12.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You wrote",
+      "back": "نوشتی",
+      "roman": "To Neveshti",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/conj-past/cp-13.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} wrote",
+      "back": "نوشت",
+      "roman": "Ou Nevesht",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/conj-past/cp-14.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We wrote",
+      "back": "نوشتیم",
+      "roman": "Ma Neveshtim",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/conj-past/cp-15.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all wrote",
+      "back": "نوشتید",
+      "roman": "Shoma Neveshtid",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/conj-past/cp-16.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They wrote",
+      "back": "نوشتند",
+      "roman": "Anha Neveshtand",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/conj-past/cp-17.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I went",
+      "back": "رفتم",
+      "roman": "Man Raftam",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/conj-past/cp-18.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You went",
+      "back": "رفتی",
+      "roman": "To Rafti",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/conj-past/cp-19.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} went",
+      "back": "رفت",
+      "roman": "Ou Raft",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/conj-past/cp-20.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We went",
+      "back": "رفتیم",
+      "roman": "Ma Raftim",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/conj-past/cp-21.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all went",
+      "back": "رفتید",
+      "roman": "Shoma Raftid",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/conj-past/cp-22.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They went",
+      "back": "رفتند",
+      "roman": "Anha Raftand",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/conj-past/cp-23.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I washed",
+      "back": "شستم",
+      "roman": "Man Shostam",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/conj-past/cp-24.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You washed",
+      "back": "شستی",
+      "roman": "To Shosti",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/conj-past/cp-25.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} washed",
+      "back": "شست",
+      "roman": "Ou Shost",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/conj-past/cp-26.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We washed",
+      "back": "شستیم",
+      "roman": "Ma Shostim",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/conj-past/cp-27.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all washed",
+      "back": "شستید",
+      "roman": "Shoma Shostid",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/conj-past/cp-28.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They washed",
+      "back": "شستند",
+      "roman": "Anha Shostand",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/conj-past/cp-29.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I came",
+      "back": "آمدم",
+      "roman": "Man Amadam",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/conj-past/cp-30.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You came",
+      "back": "آمدی",
+      "roman": "To Amadi",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/conj-past/cp-31.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} came",
+      "back": "آمد",
+      "roman": "Ou Amad",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/conj-past/cp-32.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We came",
+      "back": "آمدیم",
+      "roman": "Ma Amadim",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/conj-past/cp-33.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all came",
+      "back": "آمدید",
+      "roman": "Shoma Amadid",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/conj-past/cp-34.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They came",
+      "back": "آمدند",
+      "roman": "Anha Amadand",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/conj-past/cp-35.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I saw",
+      "back": "دیدم",
+      "roman": "Man Didam",
+      "emoji": "👀",
+      "audio": "data/audio/fa/conj-past/cp-36.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You saw",
+      "back": "دیدی",
+      "roman": "To Didi",
+      "emoji": "👀",
+      "audio": "data/audio/fa/conj-past/cp-37.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} saw",
+      "back": "دید",
+      "roman": "Ou Did",
+      "emoji": "👀",
+      "audio": "data/audio/fa/conj-past/cp-38.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We saw",
+      "back": "دیدیم",
+      "roman": "Ma Didim",
+      "emoji": "👀",
+      "audio": "data/audio/fa/conj-past/cp-39.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all saw",
+      "back": "دیدید",
+      "roman": "Shoma Didid",
+      "emoji": "👀",
+      "audio": "data/audio/fa/conj-past/cp-40.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They saw",
+      "back": "دیدند",
+      "roman": "Anha Didand",
+      "emoji": "👀",
+      "audio": "data/audio/fa/conj-past/cp-41.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I looked",
+      "back": "نگاه کردم",
+      "roman": "Man Negah kardam",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/conj-past/cp-42.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You looked",
+      "back": "نگاه کردی",
+      "roman": "To Negah kardi",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/conj-past/cp-43.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} looked",
+      "back": "نگاه کرد",
+      "roman": "Ou Negah kard",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/conj-past/cp-44.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We looked",
+      "back": "نگاه کردیم",
+      "roman": "Ma Negah kardim",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/conj-past/cp-45.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all looked",
+      "back": "نگاه کردید",
+      "roman": "Shoma Negah kardid",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/conj-past/cp-46.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They looked",
+      "back": "نگاه کردند",
+      "roman": "Anha Negah kardand",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/conj-past/cp-47.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I sat",
+      "back": "نشستم",
+      "roman": "Man Neshastam",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/conj-past/cp-48.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You sat",
+      "back": "نشستی",
+      "roman": "To Neshasti",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/conj-past/cp-49.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} sat",
+      "back": "نشست",
+      "roman": "Ou Neshast",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/conj-past/cp-50.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We sat",
+      "back": "نشستیم",
+      "roman": "Ma Neshastim",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/conj-past/cp-51.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all sat",
+      "back": "نشستید",
+      "roman": "Shoma Neshastid",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/conj-past/cp-52.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They sat",
+      "back": "نشستند",
+      "roman": "Anha Neshastand",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/conj-past/cp-53.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I bought",
+      "back": "خریدم",
+      "roman": "Man Kharidam",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/conj-past/cp-54.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You bought",
+      "back": "خریدی",
+      "roman": "To Kharidi",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/conj-past/cp-55.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} bought",
+      "back": "خرید",
+      "roman": "Ou Kharid",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/conj-past/cp-56.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We bought",
+      "back": "خریدیم",
+      "roman": "Ma Kharidim",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/conj-past/cp-57.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all bought",
+      "back": "خریدید",
+      "roman": "Shoma Kharidid",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/conj-past/cp-58.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They bought",
+      "back": "خریدند",
+      "roman": "Anha Kharidand",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/conj-past/cp-59.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I sold",
+      "back": "فروختم",
+      "roman": "Man Forookhtam",
+      "emoji": "💵",
+      "audio": "data/audio/fa/conj-past/cp-60.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You sold",
+      "back": "فروختی",
+      "roman": "To Forookhti",
+      "emoji": "💵",
+      "audio": "data/audio/fa/conj-past/cp-61.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} sold",
+      "back": "فروخت",
+      "roman": "Ou Forookht",
+      "emoji": "💵",
+      "audio": "data/audio/fa/conj-past/cp-62.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We sold",
+      "back": "فروختیم",
+      "roman": "Ma Forookhtim",
+      "emoji": "💵",
+      "audio": "data/audio/fa/conj-past/cp-63.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all sold",
+      "back": "فروختید",
+      "roman": "Shoma Forookhtid",
+      "emoji": "💵",
+      "audio": "data/audio/fa/conj-past/cp-64.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They sold",
+      "back": "فروختند",
+      "roman": "Anha Forookhtand",
+      "emoji": "💵",
+      "audio": "data/audio/fa/conj-past/cp-65.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I hit",
+      "back": "زدم",
+      "roman": "Man Zadam",
+      "emoji": "👊",
+      "audio": "data/audio/fa/conj-past/cp-66.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You hit",
+      "back": "زدی",
+      "roman": "To Zadi",
+      "emoji": "👊",
+      "audio": "data/audio/fa/conj-past/cp-67.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} hit",
+      "back": "زد",
+      "roman": "Ou Zad",
+      "emoji": "👊",
+      "audio": "data/audio/fa/conj-past/cp-68.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We hit",
+      "back": "زدیم",
+      "roman": "Ma Zadim",
+      "emoji": "👊",
+      "audio": "data/audio/fa/conj-past/cp-69.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all hit",
+      "back": "زدید",
+      "roman": "Shoma Zadid",
+      "emoji": "👊",
+      "audio": "data/audio/fa/conj-past/cp-70.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They hit",
+      "back": "زدند",
+      "roman": "Anha Zadand",
+      "emoji": "👊",
+      "audio": "data/audio/fa/conj-past/cp-71.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I gave",
+      "back": "دادم",
+      "roman": "Man Dadam",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/conj-past/cp-72.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You gave",
+      "back": "دادی",
+      "roman": "To Dadi",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/conj-past/cp-73.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} gave",
+      "back": "داد",
+      "roman": "Ou Dad",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/conj-past/cp-74.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We gave",
+      "back": "دادیم",
+      "roman": "Ma Dadim",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/conj-past/cp-75.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all gave",
+      "back": "دادید",
+      "roman": "Shoma Dadid",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/conj-past/cp-76.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They gave",
+      "back": "دادند",
+      "roman": "Anha Dadand",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/conj-past/cp-77.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I got",
+      "back": "گرفتم",
+      "roman": "Man Gereftam",
+      "emoji": "📥",
+      "audio": "data/audio/fa/conj-past/cp-78.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You got",
+      "back": "گرفتی",
+      "roman": "To Gerefti",
+      "emoji": "📥",
+      "audio": "data/audio/fa/conj-past/cp-79.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} got",
+      "back": "گرفت",
+      "roman": "Ou Gereft",
+      "emoji": "📥",
+      "audio": "data/audio/fa/conj-past/cp-80.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We got",
+      "back": "گرفتیم",
+      "roman": "Ma Gereftim",
+      "emoji": "📥",
+      "audio": "data/audio/fa/conj-past/cp-81.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all got",
+      "back": "گرفتید",
+      "roman": "Shoma Gereftid",
+      "emoji": "📥",
+      "audio": "data/audio/fa/conj-past/cp-82.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They got",
+      "back": "گرفتند",
+      "roman": "Anha Gereftand",
+      "emoji": "📥",
+      "audio": "data/audio/fa/conj-past/cp-83.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "I had",
+      "back": "داشتم",
+      "roman": "Man Dashtam",
+      "emoji": "💰",
+      "audio": "data/audio/fa/conj-past/cp-84.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "You had",
+      "back": "داشتی",
+      "roman": "To Dashti",
+      "emoji": "💰",
+      "audio": "data/audio/fa/conj-past/cp-85.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "{he} had",
+      "back": "داشت",
+      "roman": "Ou Dasht",
+      "emoji": "💰",
+      "audio": "data/audio/fa/conj-past/cp-86.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "We had",
+      "back": "داشتیم",
+      "roman": "Ma Dashtim",
+      "emoji": "💰",
+      "audio": "data/audio/fa/conj-past/cp-87.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "Y'all had",
+      "back": "داشتید",
+      "roman": "Shoma Dashtid",
+      "emoji": "💰",
+      "audio": "data/audio/fa/conj-past/cp-88.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "They had",
+      "back": "داشتند",
+      "roman": "Anha Dashtand",
+      "emoji": "💰",
+      "audio": "data/audio/fa/conj-past/cp-89.mp3",
+      "kind": "word",
+      "pos": "verb"
+    }
+  ]
+}

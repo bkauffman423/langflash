@@ -25,6 +25,7 @@ header .deckname{color:var(--dim);font-size:13px;flex:1;white-space:nowrap;overf
 .iconbtn.on{border-color:var(--accent);color:var(--accent)}
 main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:18px;position:relative;overflow:hidden}
+#progress{position:absolute;top:0;left:0;height:3px;background:var(--accent);width:0;transition:width .2s}
 #timerbar{position:absolute;bottom:0;left:0;height:4px;background:var(--warn);width:0}
 
 /* home */
@@ -36,11 +37,15 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .deckcard:hover{border-color:var(--accent)}
 .deckcard .t{font-weight:600}
 .deckcard .m{color:var(--dim);font-size:12.5px;margin-top:2px}
+.setchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--fg);cursor:pointer;margin:10px 0 2px}
+.setchip:active{transform:scale(.98)}
+.setchip::before{content:"⚙";opacity:.65}
 .sec{font-size:12.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
 .sec.spacer{margin-top:24px}
 .langrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .langrow select{flex:1;max-width:280px;background:var(--card2);border:1px solid var(--line);color:var(--fg);
   border-radius:8px;padding:9px 10px;font-size:14px}
+.langrow .dirsel{flex:0 0 auto;min-width:160px}
 .lessonrow{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
   border-radius:10px;padding:9px 12px;margin-top:8px;margin-left:14px}
 .lessondate{color:var(--dim);font-size:12.5px;min-width:78px}
@@ -64,21 +69,31 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 
 /* card */
 #session{display:none;width:min(720px,100%);height:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-/* slim lesson progress bar (session view) */
-#progresswrap{width:100%;height:6px;flex:0 0 auto;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:14px}
-#progressfill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .25s ease}
 #stage{width:100%;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:26px 20px 20px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer}
-#kind{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
-#visual{font-size:84px;line-height:1}
-#visual img{max-width:min(320px,70vw);max-height:200px;border-radius:10px}
-#prompt{font-size:clamp(26px,6vw,44px);font-weight:700;overflow-wrap:break-word}
-#hint{color:var(--dim);font-size:14px;max-width:90%}
-#answer{font-size:clamp(24px,5.5vw,40px);font-weight:700;color:var(--good);overflow-wrap:break-word}
+  padding:20px;min-height:320px;display:grid;grid-template-rows:auto 1fr auto;align-content:start;gap:8px;cursor:pointer}
+#kind{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-align:center}
+
+/* Prompt area - FIXED HEIGHT, never moves */
+#prompt{display:block;width:100%;font-size:clamp(36px,8vw,56px);font-weight:700;overflow-wrap:break-word;line-height:1.2;text-align:center;min-height:100px}
+#prompt .tw{display:block}
+#prompt.rtl .tw{direction:rtl;unicode-bidi:isolate;font-family:"Segoe UI","Tahoma","Noto Naskh Arabic","Vazirmatn",sans-serif}
+#prompt .roman-prompt{display:block;font-size:clamp(36px,8vw,56px);color:var(--warn);font-weight:600;margin-top:8px;letter-spacing:.4px}
+
+/* Answer area - FIXED HEIGHT reserved space, appears in same position */
+#answer{font-size:clamp(28px,6.5vw,44px);font-weight:700;color:var(--good);overflow-wrap:break-word;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;visibility:hidden}
 #answer .tw{display:block}
 #answer.rtl .tw{direction:rtl;unicode-bidi:isolate;font-family:"Segoe UI","Tahoma","Noto Naskh Arabic","Vazirmatn",sans-serif}
-#answer .roman,#prompt .roman{display:block;font-size:clamp(16px,3.5vw,22px);color:var(--warn);font-weight:600;margin-top:6px;letter-spacing:.4px}
-#answer .alt{display:block;font-size:14px;color:var(--dim);font-weight:400;margin-top:4px}
+#answer .roman{display:block;font-size:clamp(18px,4vw,24px);color:var(--warn);font-weight:600;margin-top:6px;letter-spacing:.4px}
+#answer .visual-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px;margin:8px 0;width:100%}
+#answer .visual-area img{max-width:min(320px,70vw);max-height:200px;border-radius:12px}
+#answer .visual-area .emoji{font-size:84px;line-height:1}
+#answer .translation{display:block;font-size:clamp(36px,8vw,56px);font-weight:700;color:var(--fg);margin-top:10px}
+#answer.pre-reveal .translation,#answer.pre-reveal .tw,#answer.pre-reveal .roman,#answer.pre-reveal .alt{visibility:hidden}
+#answer .alt{display:block;font-size:15px;color:var(--dim);font-weight:400;margin-top:6px}
+
+/* Visual hint in prompt phase (for tap mode) - also fixed position */
+#visual{font-size:84px;line-height:1;min-height:100px;display:flex;align-items:center;justify-content:center}
+#visual img{max-width:min(320px,70vw);max-height:200px;border-radius:10px}
 #note{color:var(--dim);font-size:13.5px;font-style:italic}
 #tapcue{color:var(--dim);font-size:13px;margin-top:10px}
 #counter{color:var(--dim);font-size:12.5px;margin-top:12px}
@@ -87,6 +102,15 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 
 /* voice */
 #voicebar{display:none;align-items:center;gap:12px;margin-top:14px}
+#counterwrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+#discardbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--dim);font-size:16px;cursor:pointer}
+#discardbtn:hover{border-color:var(--bad);color:var(--bad)}
+#discardtoast{display:none;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--dim)}
+#undodiscard{background:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;padding:5px 12px;font-size:12.5px}
+.lessoncounts{margin-left:auto;flex:0 0 auto;font-size:11.5px;color:var(--dim)}
+.discchip{margin-left:8px;flex:0 0 auto;background:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:11.5px;color:var(--dim)}
+.discchip:hover{border-color:var(--accent);color:var(--accent)}
+#discbtn{display:none;margin-top:8px;width:100%;background:none;border:1px dashed var(--line);border-radius:10px;padding:8px;font-size:12.5px;color:var(--dim)}
 #micbtn{width:56px;height:56px;border-radius:50%;border:2px solid var(--line);background:var(--card2);
   color:var(--fg);font-size:22px;cursor:pointer}
 #micbtn.listening{border-color:var(--bad);background:#2a1518;animation:pulse 1s infinite}
@@ -103,6 +127,8 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .row input[type=number]{width:74px;background:var(--card2);border:1px solid var(--line);color:var(--fg);
   border-radius:8px;padding:6px 8px}
 .row select{background:var(--card2);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:6px}
+.row .dirsel{width:140px}
+#settings .row select{width:185px}
 .row input[type=checkbox]{width:18px;height:18px}
 .small{font-size:11.5px;color:var(--dim);margin:2px 0 12px}
 #endcard{display:none;text-align:center}
@@ -120,25 +146,19 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
     <button class="iconbtn" id="homebtn" title="Back to decks" style="display:none">☰</button>
   </header>
   <main>
+    <div id="progress"></div>
     <div id="timerbar"></div>
 
     <section id="home">
       <h1>Foreign-language flashcards</h1>
-      <div class="sub">Word shown in your language → recall the translation. Auto-play, TTS, and voice checking built in.</div>
-      <div class="modes">
-        <button class="modebtn sel" data-mode="manual">Manual<small>tap to reveal</small></button>
-        <button class="modebtn" data-mode="auto">Auto<small>timed show &amp; reveal</small></button>
-        <button class="modebtn" data-mode="voice">Voice quiz<small>say it, get scored</small></button>
-      </div>
+      <div class="sub" id="homeSub">Tap a deck or a class lesson to start. Mode, direction, languages and pacing live in ⚙ Settings.</div>
+      <button class="setchip" id="setchip" title="Adjust in Settings">Manual · Foreign → English · 20 cards</button>
       <div class="sec">Language</div>
       <div class="deckcard" style="cursor:default">
-        <div class="langrow">
-          <label for="langsel" style="font-weight:600">Target language</label>
-          <select id="langsel"></select>
-        </div>
         <div class="m" id="deckmeta"></div>
       </div>
       <button class="startbtn" id="startbtn">Start flashcards</button>
+      <button id="discbtn"></button>
 
       <div class="sec spacer">Classes</div>
       <div id="classlist"></div>
@@ -147,13 +167,12 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
     </section>
 
     <section id="session">
-      <div id="progresswrap" role="progressbar" aria-label="Lesson progress"><div id="progressfill"></div></div>
       <div id="stage">
         <div id="kind"></div>
         <div id="visual"></div>
         <div id="prompt"></div>
         <div id="hint"></div>
-        <div id="answer" style="display:none"></div>
+        <div id="answer"></div>
         <div id="note"></div>
         <div id="feedback"></div>
         <div id="tapcue">tap anywhere to reveal</div>
@@ -162,7 +181,8 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
         <button id="micbtn" title="Speak the translation">🎙</button>
         <div id="spoken">tap mic and say it</div>
       </div>
-      <div id="counter"></div>
+      <div id="counterwrap"><button id="discardbtn" title="Discard this card — it won't appear again unless you re-include it">🗑</button><div id="counter"></div></div>
+      <div id="discardtoast"></div>
     </section>
 
     <section id="endcard">
@@ -173,7 +193,23 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
 
     <div id="settings"><div class="panel">
       <h2>Settings</h2>
-      <div class="small">Auto-mode base seconds (words / phrases / sentences). Longer text gets extra time automatically.</div>
+      <div class="row"><label for="s_mode">Practice mode</label><select id="s_mode">
+        <option value="manual">Manual — tap to reveal</option>
+        <option value="auto">Auto — timed show &amp; reveal</option>
+        <option value="voice">Voice quiz — say it, scored</option>
+      </select></div>
+      <div class="row"><label for="dirsel">Card direction</label><select id="dirsel">
+        <option value="t2n">Foreign first</option>
+        <option value="n2t">Native first</option>
+      </select></div>
+      <div class="small">Direction applies to language decks and class lessons.</div>
+      <div class="row"><label for="nativesel">Native language</label><select id="nativesel"></select></div>
+      <div class="row"><label for="targetsel">Foreign language</label><select id="targetsel"></select></div>
+      <div class="row"><label for="he3sel">3rd-person pronoun</label><select id="he3sel">
+        <option value="he">He (male)</option>
+        <option value="she">She (female)</option>
+      </select></div>
+      <div class="small" style="margin-top:14px">Auto-mode base seconds (words / phrases / sentences). Longer text gets extra time automatically.</div>
       <div class="row"><label>Word show (s)</label><input type="number" id="s_word" min="1" step="0.5"></div>
       <div class="row"><label>Phrase show (s)</label><input type="number" id="s_phrase" min="1" step="0.5"></div>
       <div class="row"><label>Sentence show (s)</label><input type="number" id="s_sentence" min="1" step="0.5"></div>
@@ -181,18 +217,22 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
       <div class="row"><label>Extra time per 10 chars (s)</label><input type="number" id="s_chars" min="0" step="0.5"></div>
       <div class="row"><label>Speed multiplier</label><input type="number" id="s_mult" min="0.25" step="0.25"></div>
       <div class="small">Speech</div>
-      <div class="row"><label>Speak native word</label><input type="checkbox" id="s_tts_native"></div>
-      <div class="row"><label>Speak translation</label><input type="checkbox" id="s_tts_target"></div>
+      <div class="row"><label>Speak prompt</label><input type="checkbox" id="s_tts_prompt"></div>
+      <div class="row"><label>Speak answer</label><input type="checkbox" id="s_tts_answer"></div>
       <div class="row"><label>Voice</label><select id="s_voice"><option value="">auto</option></select></div>
       <div class="row"><label>Online voice if none installed</label><input type="checkbox" id="s_tts_fallback"></div>
       <div class="small">If no system voice exists for the target language, an English voice would mangle it — the online fallback pronounces it natively instead.</div>
+      <div class="small">Visual hints</div>
+      <div class="row"><label>Show visual</label>
+        <select id="s_visual_hint">
+          <option value="answer">answer (default)</option>
+          <option value="always">always on</option>
+          <option value="tap">tap to reveal</option>
+          <option value="off">off</option>
+        </select>
+      </div>
+      <div class="small">"tap": visual appears when word is tapped; tap again to reveal answer.</div>
       <div class="small">Session</div>
-      <div class="row"><label>Direction</label><select id="s_dir">
-        <option value="">Auto — Farsi decks: Farsi → English</option>
-        <option value="n2t">English → target language</option>
-        <option value="t2n">Target language → English</option>
-      </select></div>
-      <div class="small">Auto mode: Farsi decks and Farsi lessons show the Farsi word first (recall the English meaning); other languages stay English-first. Speech, audio and voice-grading follow the direction automatically.</div>
       <div class="row"><label>Cards per session</label><input type="number" id="s_count" min="5" step="5"></div>
       <div class="row"><label>Shuffle</label><input type="checkbox" id="s_shuffle"></div>
       <div class="row"><label>Repeat missed cards more</label><input type="checkbox" id="s_weight"></div>
@@ -200,6 +240,6 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
     </div></div>
   </main>
 </div>
-<script src="app.js?v=20261103b"></script>
+<script src="app.js?v=20261104l"></script>
 </body>
 </html>

@@ -1,114 +1,143 @@
 {
- "id": "fa-lesson-intro-verbs",
- "name": "Introductory verbs",
- "native": "en",
- "target": "fa",
- "items": [
-  {
-   "front": "to eat",
-   "back": "خوردن",
-   "roman": "Khordan",
-   "emoji": "🍽️",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-00.mp3"
-  },
-  {
-   "front": "to read",
-   "back": "خواندن",
-   "roman": "Khandan",
-   "emoji": "📖",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-01.mp3"
-  },
-  {
-   "front": "to write",
-   "back": "نوشتن",
-   "roman": "Neveshtan",
-   "emoji": "✍️",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-02.mp3"
-  },
-  {
-   "front": "to go",
-   "back": "رفتن",
-   "roman": "Raftan",
-   "emoji": "🚶",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-03.mp3"
-  },
-  {
-   "front": "to wash",
-   "back": "شستن",
-   "roman": "Shostan",
-   "emoji": "🧼",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-04.mp3"
-  },
-  {
-   "front": "to come",
-   "back": "آمدن",
-   "roman": "Amadan",
-   "emoji": "🏃",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-05.mp3"
-  },
-  {
-   "front": "to see",
-   "back": "دیدن",
-   "roman": "Didan",
-   "emoji": "👀",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-06.mp3"
-  },
-  {
-   "front": "to look",
-   "back": "نگاه کردن",
-   "roman": "Negah kardan",
-   "kind": "phrase",
-   "emoji": "🔍",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-07.mp3"
-  },
-  {
-   "front": "to sit",
-   "back": "نشستن",
-   "roman": "Neshastan",
-   "emoji": "🪑",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-08.mp3"
-  },
-  {
-   "front": "to buy",
-   "back": "خریدن",
-   "roman": "Kharidan",
-   "emoji": "🛒",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-09.mp3"
-  },
-  {
-   "front": "to sell",
-   "back": "فروختن",
-   "roman": "Forookhtan",
-   "emoji": "💵",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-10.mp3"
-  },
-  {
-   "front": "to hit",
-   "back": "زدن",
-   "roman": "Zadan",
-   "emoji": "👊",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-11.mp3"
-  },
-  {
-   "front": "to give",
-   "back": "دادن",
-   "roman": "Dadan",
-   "emoji": "🤲",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-12.mp3"
-  },
-  {
-   "front": "to get",
-   "back": "گرفتن",
-   "roman": "Gereftan",
-   "emoji": "📥",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-13.mp3"
-  },
-  {
-   "front": "to have",
-   "back": "داشتن",
-   "roman": "Dashtan",
-   "emoji": "💰",
-   "audio": "data/audio/fa/lesson-intro-verbs/liv-14.mp3"
-  }
- ]
+  "id": "fa-lesson-intro-verbs",
+  "name": "Introductory verbs",
+  "native": "en",
+  "target": "fa",
+  "items": [
+    {
+      "front": "to eat",
+      "back": "خوردن",
+      "roman": "Khordan",
+      "emoji": "🍽️",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-00.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to read",
+      "back": "خواندن",
+      "roman": "Khandan",
+      "emoji": "📖",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-01.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to write",
+      "back": "نوشتن",
+      "roman": "Neveshtan",
+      "emoji": "✍️",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-02.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to go",
+      "back": "رفتن",
+      "roman": "Raftan",
+      "emoji": "🚶",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-03.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to wash",
+      "back": "شستن",
+      "roman": "Shostan",
+      "emoji": "🧼",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-04.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to come",
+      "back": "آمدن",
+      "roman": "Amadan",
+      "emoji": "🏃",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-05.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to see",
+      "back": "دیدن",
+      "roman": "Didan",
+      "emoji": "👀",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-06.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to look",
+      "back": "نگاه کردن",
+      "roman": "Negah kardan",
+      "kind": "phrase",
+      "emoji": "🔍",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-07.mp3",
+      "pos": "verb"
+    },
+    {
+      "front": "to sit",
+      "back": "نشستن",
+      "roman": "Neshastan",
+      "emoji": "🪑",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-08.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to buy",
+      "back": "خریدن",
+      "roman": "Kharidan",
+      "emoji": "🛒",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-09.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to sell",
+      "back": "فروختن",
+      "roman": "Forookhtan",
+      "emoji": "💵",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-10.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to hit",
+      "back": "زدن",
+      "roman": "Zadan",
+      "emoji": "👊",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-11.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to give",
+      "back": "دادن",
+      "roman": "Dadan",
+      "emoji": "🤲",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-12.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to get",
+      "back": "گرفتن",
+      "roman": "Gereftan",
+      "emoji": "📥",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-13.mp3",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to have",
+      "back": "داشتن",
+      "roman": "Dashtan",
+      "emoji": "💰",
+      "audio": "data/audio/fa/lesson-intro-verbs/liv-14.mp3",
+      "kind": "word",
+      "pos": "verb"
+    }
+  ]
 }

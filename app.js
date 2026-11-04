@@ -130,21 +130,26 @@ let decks = [];
 let deck = null;          // active deck
 let mode = "manual";      // manual | auto | voice
 let session = null;       // {queue, i, correct, missed, weights}
-let phase = "prompt";     // prompt | answer
+let phase = "prompt";     // prompt | answer | visual (for tap mode)
 let timer = null, rafId = null, phaseStart = 0, phaseDur = 0;
 let recognition = null;
+let visualTapped = false; // for tap mode: true after first tap, before answer reveal
 
 /* ---------- settings ---------- */
 const DEFAULTS = {
   s_word: 4, s_phrase: 6, s_sentence: 9, s_reveal: 3, s_chars: 0.6, s_mult: 1,
-  s_tts_native: true, s_tts_target: true, s_voice: "", s_tts_fallback: true,
-  // s_dir "" = auto: Farsi decks practice target→English (Farsi first), all
-  // other decks English→target. Explicit selection in Settings overrides.
-  s_count: 20, s_shuffle: true, s_weight: true, sound: true, s_dir: ""
+  s_tts_prompt: true, s_tts_answer: true, s_voice: "", s_tts_fallback: true,
+  s_count: 20, s_shuffle: true, s_weight: true, sound: true,
+  s_visual_hint: "answer",  // "answer" (default), "always", "tap", "off"
+  s_mode: "manual",         // "manual" | "auto" | "voice" — chosen in Settings
+  s_dir: "t2n",             // "t2n" = Foreign-first (see foreign, answer native) | "n2t" = Native-first
+  s_he3: "he"               // 3rd-person pronoun in prompts: "he" (male) | "she" (female)
 };
 let S = {...DEFAULTS};
 try { Object.assign(S, JSON.parse(localStorage.getItem("langflash.settings") || "{}")); } catch(e){}
 function saveSettings(){ localStorage.setItem("langflash.settings", JSON.stringify(S)); }
+// Cards may carry a {he} token for the 3rd-person pronoun; resolved per setting.
+function he3(s){ return String(s).replace(/\{he\}/g, S.s_he3 === "she" ? "She" : "He"); }
 
 /* ---------- deck fetch ---------- */
 async function loadDecks(){
@@ -177,28 +182,102 @@ async function loadDecks(){
   renderDeckList();
 }
 
-function kindOf(it){ return it.kind || (it.front.split(/\s+/).length >= 4 ? "sentence" : it.front.split(/\s+/).length >= 2 ? "phrase" : "word"); }
-
-function renderDeckList(){
-  const sel = $("langsel");
-  sel.innerHTML = "";
-  decks.forEach((d, i) => {
-    const o = document.createElement("option");
-    o.value = i;
-    o.textContent = d.name;
-    sel.appendChild(o);
-  });
-  updateDeckMeta();
-  sel.onchange = updateDeckMeta;
-  $("startbtn").onclick = () => { if (decks.length) startSession(decks[sel.value]); };
+function kindOf(it, deckId){
+  if (it.kind) return it.kind;
+  const wc = it.front.split(/\s+/).length;
+  return wc >= 4 ? "sentence" : wc >= 2 ? "phrase" : "word";
 }
 
-function updateDeckMeta(){
-  const d = decks[$("langsel").value];
-  if (!d) return;
-  const counts = {word:0, phrase:0, sentence:0};
-  d.items.forEach(it => counts[kindOf(it)]++);
-  $("deckmeta").textContent = `${d.native} → ${d.target} · ${d.items.length} cards (${counts.word} words, ${counts.phrase} phrases, ${counts.sentence} sentences)`;
+function renderDeckList(){
+  // Get unique native and target languages from all decks
+  const nativeLangs = [...new Set(decks.map(d => d.native))].sort();
+  const targetLangs = [...new Set(decks.map(d => d.target))].sort();
+  
+  // Populate native language dropdown
+  const nativeSel = $("nativesel");
+  nativeSel.innerHTML = "";
+  nativeLangs.forEach(lang => {
+    const o = document.createElement("option");
+    o.value = lang;
+    o.textContent = langName(lang);
+    nativeSel.appendChild(o);
+  });
+  
+  // Populate target language dropdown
+  const targetSel = $("targetsel");
+  targetSel.innerHTML = "";
+  targetLangs.forEach(lang => {
+    const o = document.createElement("option");
+    o.value = lang;
+    o.textContent = langName(lang);
+    targetSel.appendChild(o);
+  });
+  
+  // Set saved values
+  // Default native language to English if available, otherwise first in list
+  nativeSel.value = S.s_native || (nativeLangs.includes("en") ? "en" : nativeLangs[0]) || "";
+  // Default foreign language to Farsi if available, otherwise first in list
+  targetSel.value = S.s_target || (targetLangs.includes("fa") ? "fa" : targetLangs[0]) || "";
+  
+  // Filter decks on change
+  nativeSel.onchange = () => { S.s_native = nativeSel.value; saveSettings(); filterDecks(); };
+  targetSel.onchange = () => { S.s_target = targetSel.value; saveSettings(); filterDecks(); };
+
+  // Card direction (foreign-first default; persists per device)
+  const dirSel = $("dirsel");
+  if (dirSel) {
+    dirSel.value = S.s_dir === "n2t" ? "n2t" : "t2n";
+    dirSel.onchange = () => { S.s_dir = dirSel.value; saveSettings(); updateChip(); filterDecks(); };
+  }
+  
+  // Initial filter
+  filterDecks();
+}
+
+// Helper to get language display name
+function langName(code){
+  const names = {
+    "en": "English", "es": "Spanish", "fr": "French", "de": "German",
+    "fa": "Farsi", "zh": "Chinese", "ja": "Japanese", "ko": "Korean",
+    "ar": "Arabic", "hi": "Hindi", "ru": "Russian", "pt": "Portuguese",
+    "it": "Italian", "tr": "Turkish", "vi": "Vietnamese", "th": "Thai"
+  };
+  return names[code] || code.toUpperCase();
+}
+
+function filterDecks(){
+  const native = $("nativesel").value;
+  const target = $("targetsel").value;
+  const matching = decks.filter(d => d.native === native && d.target === target);
+  
+  const meta = $("deckmeta");
+  if (matching.length > 0) {
+    // Show first matching deck
+    const d = matching[0];
+    const counts = {word:0, phrase:0, sentence:0};
+    d.items.forEach(it => counts[kindOf(it)]++);
+    // Deck names encode their language ("Spanish — core 30"); the arrow already names it — drop the prefix.
+    const nm = d.name.replace(/^[^—]*—\s*/, "");
+    const dc = loadDiscards(d.id).size;
+    meta.textContent = `${langName(native)} → ${langName(target)} · ${nm} · ${d.items.length} cards (${counts.word} words, ${counts.phrase} phrases, ${counts.sentence} sentences)` + (dc ? ` · 🗑 ${dc} discarded` : "");
+    const chip = $("discbtn");
+    chip.style.display = "block";
+    chip.textContent = "🗑 reshuffle — bring discarded cards back, clear practice stats";
+    chip.onclick = () => reshuffleDeck(d);
+    $("startbtn").onclick = () => startSession(d);
+  } else {
+    meta.textContent = `No deck for ${langName(native)} → ${langName(target)}`;
+    $("startbtn").onclick = () => {};
+  }
+  
+  // Update home subtitle (follows the chosen direction)
+  const sub = $("homeSub");
+  if (sub) {
+    sub.textContent = S.s_dir === "n2t"
+      ? `Words shown in ${langName(native)} → recall the ${langName(target)} word. Mode, direction, languages and pacing live in ⚙ Settings.`
+      : `Words shown in ${langName(target)} → recall the ${langName(native)} translation. Mode, direction, languages and pacing live in ⚙ Settings.`;
+  }
+  updateChip();
 }
 
 /* ---------- classes & lessons ---------- */
@@ -275,11 +354,26 @@ function renderClasses(){
       row.appendChild(date);
       row.appendChild(b);
       row.appendChild(mkShareBtn("Copy link to lesson", () => shareLink(shareUrl(cls.id, l.id), l.title)));
+      const ld = lessonDecks[l.id];
+      if (ld && ld.items) {
+        const dc = loadDiscards(ld.id).size;
+        const c = document.createElement("span");
+        c.className = "lessoncounts";
+        c.textContent = `${ld.items.length} cards${dc ? ` · 🗑 ${dc} discarded` : ""}`;
+        row.appendChild(c);
+        const rb = document.createElement("button");
+        rb.className = "discchip";
+        rb.textContent = "reshuffle";
+        rb.title = "Re-include discarded cards and reset this deck's practice stats";
+        rb.onclick = (e) => { e.stopPropagation(); reshuffleDeck(ld); };
+        row.appendChild(rb);
+      }
       panel.appendChild(row);
     }
     card.onclick = () => togglePanel(cls.id);
     el.appendChild(card);
     el.appendChild(panel);
+    if (cls.id === openClassId) panel.style.display = "block";
     classUI[cls.id] = { card, panel };
   }
 }
@@ -289,14 +383,19 @@ function renderClasses(){
    renameable; ids decide what a link means. Lesson ids are namespaced under
    their class, so identical titles across (or within) classes never collide. */
 const classUI = {};   // clsId -> {card, panel}
+let openClassId = null; // class whose lesson panel is currently open (survives re-renders)
 
 function togglePanel(clsId){
   const u = classUI[clsId];
-  if (u) u.panel.style.display = u.panel.style.display === "none" ? "block" : "none";
+  if (u) {
+    const opening = u.panel.style.display === "none";
+    u.panel.style.display = opening ? "block" : "none";
+    openClassId = opening ? clsId : null;
+  }
 }
 function openClassPanel(clsId){
   const u = classUI[clsId];
-  if (u) { u.panel.style.display = "block"; u.card.scrollIntoView({ block: "nearest" }); }
+  if (u) { u.panel.style.display = "block"; openClassId = clsId; u.card.scrollIntoView({ block: "nearest" }); }
 }
 function shareUrl(clsId, lessonId){
   const base = location.origin + location.pathname;
@@ -363,12 +462,55 @@ function openLesson(cls, l){
   startSession(d);
 }
 
+/* ---------- card discards (device-local) ----------
+   Discarded cards are skipped by every future session for this deck on this
+   device. Stored in localStorage under the deck id — no server state, so each
+   device curates its own deck. Re-include restores a card. */
+function loadDiscards(deckId){
+  try { return new Set(JSON.parse(localStorage.getItem("langflash.discards." + deckId) || "[]")); }
+  catch(e){ return new Set(); }
+}
+function saveDiscards(deckId, set){
+  localStorage.setItem("langflash.discards." + deckId, JSON.stringify([...set]));
+}
+function refreshLessonCounts(){ renderClasses(); }
+
+function discardToast(it){
+  const t = $("discardtoast");
+  t.innerHTML = `🗑 discarded <b style="color:var(--fg)">${esc(it.front0 || it.front)}</b>`;
+  const u = document.createElement("button");
+  u.id = "undodiscard"; u.textContent = "undo";
+  u.onclick = (e) => {
+    e.stopPropagation();
+    const set = loadDiscards(deck.id);
+    set.delete(it.idx); saveDiscards(deck.id, set);
+    t.style.display = "none"; t.innerHTML = "";
+    refreshLessonCounts();
+  };
+  t.appendChild(u);
+  t.style.display = "flex";
+  clearTimeout(discardToast._t);
+  discardToast._t = setTimeout(() => { t.style.display = "none"; t.innerHTML = ""; }, 6000);
+}
+
+// Reshuffle: re-include every discarded card and clear the deck's practice
+// stats (weighted-repeat history) in one click — no review screen.
+function reshuffleDeck(d){
+  localStorage.removeItem("langflash.discards." + d.id);
+  localStorage.removeItem("langflash.stats." + d.id);
+  refreshLessonCounts();
+  $("homehint").textContent = `“${d.name}” reshuffled — discarded cards are back and practice stats were cleared.`;
+}
 /* ---------- session engine ---------- */
 function startSession(d){
   deck = d;
-  let items = d.items.map((it, idx) => ({...it, idx}));
-  const sw = effectiveDir(d) === "t2n";
-  if (sw) items = items.map(it => ({...it, front: it.back, back: it.front}));
+  const discarded = loadDiscards(d.id);
+  let items = d.items.map((it, idx) => ({...it, idx, front0: it.front, front: he3(it.front)}));
+  items = items.filter(it => !discarded.has(it.idx));
+  if (!items.length) {
+    $("homehint").textContent = `Every card in "${d.name}" is discarded on this device — use reshuffle to bring them back.`;
+    return;
+  }
   if (S.s_shuffle) items.sort(() => Math.random() - 0.5);
   // weighted repeat: pull previously-missed cards in from localStorage stats
   let stats = {};
@@ -383,44 +525,85 @@ function startSession(d){
     items.sort(() => Math.random() - 0.5);
   }
   const n = Math.min(S.s_count || 20, items.length);
-  session = { queue: items.slice(0, n), i: -1, correct: 0, total: 0, results: [], sw };
+  session = { queue: items.slice(0, n), i: -1, correct: 0, total: 0, results: [], dir: S.s_dir === "n2t" ? "n2t" : "t2n" };
   $("home").style.display = "none"; $("endcard").style.display = "none";
   $("session").style.display = "flex"; $("homebtn").style.display = "";
-  $("hdrdeck").textContent = d.name + " · " + (mode === "auto" ? "auto" : mode === "voice" ? "voice quiz" : "manual")
-    + (sw ? " · " + d.target.toUpperCase() + " → " + d.native.toUpperCase() : "");
+  // Session header shows deck, mode, and practice direction
+  $("hdrdeck").textContent = d.name + " · " + (mode === "auto" ? "auto" : mode === "voice" ? "voice quiz" : "manual") + (S.s_dir === "n2t" ? " (Native→Foreign)" : " (Foreign→Native)") + (discarded.size ? ` · 🗑 ${discarded.size} discarded` : "");
   nextCard();
 }
 
 function nextCard(){
   clearTimer();
   session.i++;
+  // skip any card discarded mid-session (weighted repeats can duplicate it)
+  { const disc = loadDiscards(deck.id);
+    while (session.i < session.queue.length && disc.has(session.queue[session.i].idx)) session.i++; }
   if (session.i >= session.queue.length) return endSession();
   phase = "prompt";
+  visualTapped = false;
   const it = session.queue[session.i];
-  const k = kindOf(it);
+  const k = kindOf(it, deck.id);
   $("kind").textContent = k;
   const v = $("visual");
-  v.innerHTML = it.img ? `<img src="${esc(it.img)}" alt="">` : (it.emoji ? esc(it.emoji) : "");
-  const pr = $("prompt");
-  pr.dir = (flipped() && isRtlDeck()) ? "rtl" : "ltr";
-  pr.innerHTML = esc(it.front)
-    + ((flipped() && it.roman) ? `<span class="roman">${esc(it.roman)}</span>` : "");
-  pr.style.display = "";
+  // Hide the standalone visual element (we use answer area's visual-area instead)
+  v.style.display = "none";
+  v.innerHTML = "";
+  
+  // Prompt/answer content follows the session direction
+  const flipped = session.dir === "n2t";
+  const promptEl = $("prompt");
+  const rtl = isRtlDeck();
+  promptEl.classList.toggle("rtl", rtl && !flipped);
+  let html;
+  if (flipped) {
+    // Native-first: show English word; Farsi + Finglish come in the answer
+    html = `<span class="tw">${esc(it.front)}</span>`;
+  } else {
+    // Foreign-first (default): foreign word on top, Finglish underneath
+    html = `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>`;
+    if (it.roman) html += `<span class="roman-prompt">${esc(it.roman)}</span>`;
+  }
+  promptEl.innerHTML = html;
+  promptEl.style.display = "block";
   $("hint").textContent = it.hint ? it.hint : "";
-  $("answer").style.display = "none"; $("answer").innerHTML = "";
+  // Build the FULL answer content up front (visual + translation + note) but keep it
+  // visibility-hidden: the card reserves the answer's exact space from the question
+  // phase, so revealing can never resize or shift the card.
+  const trHtml = flipped
+    ? `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>` + (it.roman ? `<span class="roman">${esc(it.roman)}</span>` : "")
+    : (it.front ? `<span class="translation">${esc(it.front)}</span>` : "");
+  const altHtml = it.note ? `<span class="alt">${esc(it.note)}</span>` : "";
+  const vHtml = S.s_visual_hint !== "off" && (it.img || it.emoji)
+    ? (it.img ? `<img src="${esc(it.img)}" alt="">` : `<span class="emoji">${esc(it.emoji)}</span>`) : "";
+  $("answer").innerHTML = `<div class="visual-area">${vHtml}</div>${trHtml}${altHtml}`;
+  // "always": visual is already visible with the question; translation still holds its slot unseen
+  if (S.s_visual_hint === "always") {
+    $("answer").style.visibility = "visible";
+    $("answer").classList.add("pre-reveal");
+  } else {
+    $("answer").style.visibility = "hidden";
+  }
   $("note").textContent = "";
   $("feedback").textContent = ""; $("feedback").className = "";
   $("counter").textContent = `${session.i + 1} / ${session.queue.length}`;
-  const pf = $("progressfill");
-  if (pf) pf.style.width = (100 * (session.i + 1) / session.queue.length) + "%";
+  $("progress").style.width = (100 * session.i / session.queue.length) + "%";
   $("voicebar").style.display = (mode === "voice") ? "flex" : "none";
   $("spoken").textContent = "tap mic and say it";
-  $("tapcue").textContent = mode === "manual" ? "tap anywhere to reveal"
-    : mode === "voice" ? "say the translation, or tap to reveal"
-    : "auto mode — sit back";
+  
+  if (mode === "manual" && S.s_visual_hint === "tap") {
+    $("tapcue").textContent = "tap word for visual → tap again for answer";
+  } else if (mode === "manual") {
+    $("tapcue").textContent = "tap anywhere to reveal";
+  } else if (mode === "voice") {
+    $("tapcue").textContent = "say the translation, or tap to reveal";
+  } else {
+    $("tapcue").textContent = "auto mode — sit back";
+  }
 
-  if (S.s_tts_native) speak(it.front, flipped() ? deck.target : deck.native,
-    flipped() ? it.audio : undefined);
+  // TTS for prompt
+  const promptLang = flipped ? deck.native : deck.target;
+  if (S.s_tts_prompt) speak($("prompt").textContent, promptLang, getPromptAudio(it));
 
   if (mode === "auto") {
     phaseDur = showSeconds(it) * 1000;
@@ -431,16 +614,43 @@ function nextCard(){
   }
 }
 
+// Helper: should we show visual at this phase?
+function shouldShowVisual(currentPhase) {
+  const setting = S.s_visual_hint || "answer";
+  if (setting === "off") return false;
+  if (setting === "always") return true;
+  if (setting === "answer") return currentPhase === "answer";
+  if (setting === "tap") return currentPhase === "answer" || visualTapped;
+  return false;
+}
+
+// Helper: get audio for prompt (foreign word's bundled audio follows direction)
+function getPromptAudio(it) {
+  return session && session.dir === "n2t" ? null : stampedAudio(it);
+}
+
+// Helper: get audio for answer
+function getAnswerAudio(it) {
+  return session && session.dir === "n2t" ? stampedAudio(it) : null;
+}
+
+// Version-stamp bundled mp3 URLs so regenerated clips can't be served from a
+// device's stale cache (same cache-bust discipline as app.js?v=).
+function stampedAudio(it) {
+  if (!it.audio) return null;
+  return it.audio + (it.audio.includes("?") ? "&" : "?") + "v=" + BUILD;
+}
+
 function showSeconds(it){
   const base = {word: S.s_word, phrase: S.s_phrase, sentence: S.s_sentence}[kindOf(it)] || 4;
   const extra = (S.s_chars || 0) * (it.front.length / 10);
-  const ttsBonus = S.s_tts_native ? Math.min(3, it.front.split(/\s+/).length * 0.5) : 0;
+  const ttsBonus = S.s_tts_prompt ? Math.min(3, it.front.split(/\s+/).length * 0.5) : 0;
   return Math.max(1.5, (base + extra + ttsBonus) * (S.s_mult || 1));
 }
 function revealSeconds(it){
   const base = S.s_reveal || 3;
   const extra = (S.s_chars || 0) * (it.back.length / 10);
-  const ttsBonus = S.s_tts_target ? Math.min(3, it.back.split(/\s+/).length * 0.5) : 0;
+  const ttsBonus = S.s_tts_answer ? Math.min(3, it.back.split(/\s+/).length * 0.5) : 0;
   return Math.max(1.5, (base + extra + ttsBonus) * (S.s_mult || 1));
 }
 
@@ -449,19 +659,28 @@ function reveal(){
   if (phase !== "prompt") return;
   phase = "answer";
   const it = session.queue[session.i];
-  const rtl = isRtlDeck() && !flipped();
+  const rtl = isRtlDeck();
   const ans = $("answer");
   ans.classList.toggle("rtl", rtl);
-  // target-script line (RTL isolated for Farsi), then romanization ("Fenglish"), then note
-  // (when direction is flipped the romanization rides under the Farsi prompt instead)
-  let html = `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>`;
-  if (it.roman && !flipped()) html += `<span class="roman">${esc(it.roman)}</span>`;
-  if (it.note) html += `<span class="alt">${esc(it.note)}</span>`;
-  ans.innerHTML = html;
-  ans.style.display = "";
-  $("tapcue").textContent = mode === "auto" ? "" : "tap anywhere for next";
-  if (S.s_tts_target) speak(it.back, flipped() ? deck.native : deck.target,
-    flipped() ? undefined : it.audio);
+  // Answer content follows the session direction
+  const flipped = session.dir === "n2t";
+  const answerText = flipped ? it.back : it.front;
+  const answerLang = flipped ? deck.target : deck.native;
+
+  // Content was pre-built by nextCard — revealing is only a visibility flip,
+  // so the card's height never changes between question and answer.
+  ans.classList.remove("pre-reveal");
+  ans.style.visibility = "visible";
+
+  if (mode === "auto") {
+    $("tapcue").textContent = "";
+  } else {
+    $("tapcue").textContent = "tap anywhere for next";
+  }
+  
+  // TTS for answer — speak the answer text in its own language
+  if (S.s_tts_answer) speak(answerText, answerLang, getAnswerAudio(it));
+  
   if (mode === "auto") {
     phaseDur = revealSeconds(it) * 1000;
     startTimerBar();
@@ -473,7 +692,14 @@ function endSession(){
   clearTimer();
   $("session").style.display = "none"; $("endcard").style.display = "block";
   const pct = session.total ? Math.round(100 * session.correct / session.total) : 0;
-  $("endscore").textContent = `${session.correct} / ${session.total} (${pct}%)`;
+  if (session.total > 0) {
+    // Scored mode (voice quiz)
+    $("endscore").textContent = `${session.correct} / ${session.total} (${pct}%)`;
+  } else {
+    // Unscored mode (manual/auto) - just show cards completed
+    const completed = session.queue.length;
+    $("endscore").textContent = `Completed ${completed} card${completed === 1 ? "" : "s"}`;
+  }
   $("enddetail").textContent = session.results.length
     ? "Missed: " + session.results.filter(r => !r.ok).map(r => r.front + " → " + r.back).slice(0, 6).join(" · ")
     : "";
@@ -504,6 +730,20 @@ function clearTimer(){ if (timer) clearTimeout(timer); timer = null; cancelAnima
 /* ---------- interaction ---------- */
 $("stage").addEventListener("click", () => {
   if (mode === "voice" && phase === "prompt") { startVoice(); return; }
+  
+  // Handle tap mode: first tap reveals the (already-positioned) visual; translation
+  // keeps its reserved slot unseen until the second tap
+  if (S.s_visual_hint === "tap" && phase === "prompt") {
+    if (!visualTapped) {
+      visualTapped = true;
+      $("answer").classList.add("pre-reveal");
+      $("answer").style.visibility = "visible";
+      $("tapcue").textContent = "tap again to reveal answer";
+      return;
+    }
+    // Second tap - reveal answer
+  }
+  
   if (phase === "prompt") reveal(); else if (mode !== "auto") nextCard();
 });
 document.addEventListener("keydown", (e) => {
@@ -525,10 +765,28 @@ function goHome(){
 $("homebtn").onclick = goHome;
 $("againbtn").onclick = () => startSession(deck);
 
-document.querySelectorAll(".modebtn").forEach(b => b.onclick = () => {
-  document.querySelectorAll(".modebtn").forEach(x => x.classList.remove("sel"));
-  b.classList.add("sel"); mode = b.dataset.mode;
-});
+$("discardbtn").onclick = (e) => {
+  e.stopPropagation();
+  if (!session || session.i < 0 || !session.queue[session.i]) return;
+  const it = session.queue[session.i];
+  const set = loadDiscards(deck.id);
+  set.add(it.idx);
+  saveDiscards(deck.id, set);
+  refreshLessonCounts();
+  discardToast(it);
+  nextCard();
+};
+
+// Practice mode now lives in Settings; keep the global `mode` in sync.
+function syncMode(){ mode = (S.s_mode === "auto" || S.s_mode === "voice") ? S.s_mode : "manual"; }
+function updateChip(){
+  const chip = $("setchip"); if (!chip) return;
+  const m = mode === "auto" ? "Auto" : mode === "voice" ? "Voice quiz" : "Manual";
+  const d = S.s_dir === "n2t" ? "English → " + langName(S.s_target || "fa") : langName(S.s_target || "fa") + " → English";
+  chip.textContent = `${m} · ${d} · ${S.s_count || 20} cards`;
+}
+$("setchip").onclick = () => { $("settings").style.display = "block"; };
+if ($("s_mode")) $("s_mode").addEventListener("change", () => { S.s_mode = $("s_mode").value; saveSettings(); syncMode(); updateChip(); });
 
 /* ---------- language metadata ---------- */
 const LANGS = {
@@ -540,13 +798,6 @@ const LANGS = {
 };
 function langMeta(code){ return LANGS[code] || { name: code, tts: code }; }
 function isRtlDeck(){ return !!langMeta(deck && deck.target).rtl; }
-// Practice direction: "n2t" = prompt in native language (default, original
-// behavior); "t2n" = prompt in the target language (e.g. Farsi first, recall
-// the English meaning). The swap happens on the queue at session start, so
-// prompts, answers, timers, grading and stats all follow automatically;
-// flipped() only re-routes language choices (TTS voice, RTL, mic language).
-function flipped(){ return !!(session && session.sw); }
-function effectiveDir(d){ return S.s_dir || (d.target === "fa" ? "t2n" : "n2t"); }
 
 /* ---------- TTS ---------- */
 function voices(){ return window.speechSynthesis ? speechSynthesis.getVoices() : []; }
@@ -598,9 +849,16 @@ function playUrl(url){
   const a = ensureAudioEl();
   try { a.pause(); } catch(e){}
   a.src = url;
-  a.play().then(() => { audioUnlocked = true; }).catch(() => {
-    const fb = $("feedback");
-    if (fb) { fb.textContent = "audio blocked — tap the screen once and press 🔊 twice to replay"; fb.className = ""; }
+  return new Promise((resolve, reject) => {
+    const onEnded = () => { cleanup(); resolve(); };
+    const onError = (e) => { cleanup(); reject(e); };
+    const cleanup = () => {
+      a.removeEventListener('ended', onEnded);
+      a.removeEventListener('error', onError);
+    };
+    a.addEventListener('ended', onEnded, { once: true });
+    a.addEventListener('error', onError, { once: true });
+    a.play().then(() => { audioUnlocked = true; }).catch(reject);
   });
 }
 function speak(text, lang, audioUrl){
@@ -620,7 +878,12 @@ function speak(text, lang, audioUrl){
   // No matching system voice: prefer deck-bundled audio (pre-generated, offline,
   // e.g. Farsi), and only then the online fallback. Never let an English voice
   // mangle foreign text.
-  if (audioUrl) { playUrl(audioUrl); return; }
+  if (audioUrl) {
+    playUrl(audioUrl).catch(() => {
+      if (S.s_tts_fallback !== false) speakFallback(text, meta.tts);
+    });
+    return;
+  }
   if (S.s_tts_fallback !== false) speakFallback(text, meta.tts);
 }
 async function speakFallback(text, lang){
@@ -657,14 +920,14 @@ function startVoice(){
   if (!SR) { $("spoken").textContent = "voice recognition not supported in this browser"; return; }
   if (recognition) { recognition.abort(); recognition = null; }
   recognition = new SR();
-  recognition.lang = flipped() ? deck.native : deck.target;
+  recognition.lang = session.dir === "n2t" ? deck.target : deck.native;
   recognition.interimResults = false;
   recognition.maxAlternatives = 3;
   $("micbtn").classList.add("listening");
   $("spoken").textContent = "listening…";
   recognition.onresult = (ev) => {
     const alts = Array.from(ev.results[0]).map(r => r.transcript);
-    $("spoken").textContent = "you said: “" + alts[0] + "”";
+    $("spoken").textContent = "you said: \"" + alts[0] + "\"";
     gradeVoice(alts);
   };
   recognition.onerror = (ev) => {
@@ -698,22 +961,27 @@ function lev(a, b){
 }
 function gradeVoice(alts){
   const it = session.queue[session.i];
-  const want = norm(it.back);
+  // Expected spoken answer follows direction: native word (t2n) or foreign word (n2t).
+  // When foreign is expected, accept the romanization too.
+  const flipped = session.dir === "n2t";
+  const wants = (flipped ? [it.back, it.roman] : [it.front]).filter(Boolean).map(norm).filter(Boolean);
+  const answerText = flipped ? it.back : it.front;
   let best = 1e9, bestAlt = "";
   for (const alt of alts) {
     const got = norm(alt);
-    const d = Math.min(lev(want, got), ...want.split(" ").map(w => lev(w, got)));
-    if (d < best) { best = d; bestAlt = alt; }
+    for (const want of wants) {
+      const d = Math.min(lev(want, got), ...want.split(" ").map(w => lev(w, got)));
+      if (d < best) { best = d; bestAlt = alt; }
+    }
   }
-  const len = Math.max(1, want.length);
+  const len = Math.max(1, (wants[0] || "").length);
   const ok = best <= Math.max(1, Math.floor(len * 0.2));
   const fb = $("feedback");
-  fb.textContent = ok ? "✓ correct" : `✗ close — answer: ${it.back}`;
+  fb.textContent = ok ? "✓ correct" : `✗ close — answer: ${answerText}`;
   fb.className = ok ? "good" : "bad";
   session.total++; session.correct += ok ? 1 : 0;
   session.results.push({idx: it.idx, front: it.front, back: it.back, ok});
-  if (ok && S.s_tts_target) speak(it.back, flipped() ? deck.native : deck.target,
-    flipped() ? undefined : it.audio);
+  if (ok && S.s_tts_answer) speak(answerText, flipped ? deck.target : deck.native, getAnswerAudio(it));
   timer = setTimeout(nextCard, ok ? 1200 : 2600);
 }
 
@@ -724,25 +992,38 @@ function gradeVoice(alts){
 $("settingsbtn").onclick = () => { $("settings").style.display = $("settings").style.display === "block" ? "none" : "block"; };
 $("settings").addEventListener("click", (e) => { if (e.target.id === "settings") $("settings").style.display = "none"; });
 const NUMKEYS = ["s_word","s_phrase","s_sentence","s_reveal","s_chars","s_mult","s_count"];
-const CHKKEYS = ["s_tts_native","s_tts_target","s_shuffle","s_weight","s_tts_fallback"];
+const CHKKEYS = ["s_tts_prompt","s_tts_answer","s_shuffle","s_weight","s_tts_fallback"];
 function pushSettingsToUI(){
   for (const k of NUMKEYS) $(k).value = S[k];
   for (const k of CHKKEYS) $(k).checked = !!S[k];
-  $("s_dir").value = S.s_dir || "";
+  // visual hint
+  if ($("s_visual_hint")) $("s_visual_hint").value = S.s_visual_hint || "answer";
+  if ($("s_mode")) $("s_mode").value = (S.s_mode === "auto" || S.s_mode === "voice") ? S.s_mode : "manual";
+  if ($("he3sel")) $("he3sel").value = (S.s_he3 === "she") ? "she" : "he";
   populateVoices(); $("s_voice").value = S.s_voice || "";
 }
-for (const k of NUMKEYS) $(k).addEventListener("change", () => { S[k] = parseFloat($(k).value) || DEFAULTS[k]; saveSettings(); });
+for (const k of NUMKEYS) $(k).addEventListener("change", () => { S[k] = parseFloat($(k).value) || DEFAULTS[k]; saveSettings(); updateChip(); });
 for (const k of CHKKEYS) $(k).addEventListener("change", () => { S[k] = $(k).checked; saveSettings(); });
 $("s_voice").addEventListener("change", () => { S.s_voice = $("s_voice").value; saveSettings(); });
-$("s_dir").addEventListener("change", () => { S.s_dir = $("s_dir").value; saveSettings(); });
+if ($("s_visual_hint")) $("s_visual_hint").addEventListener("change", () => { S.s_visual_hint = $("s_visual_hint").value; saveSettings(); });
+if ($("he3sel")) $("he3sel").addEventListener("change", () => {
+  S.s_he3 = $("he3sel").value === "she" ? "she" : "he";
+  saveSettings();
+  // Live-update remaining cards in an active session (current card keeps its pronoun until tap)
+  if (session) session.queue.forEach(q => { if (q.front0 != null) q.front = he3(q.front0); });
+});
 
-function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
 
 /* ---------- boot ---------- */
-const BUILD = "20261103b";
+const BUILD = "20261104l";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();
+syncMode();
+updateChip();
 loadDecks();
 loadClasses();
 if (window.matchMedia && matchMedia("(display-mode: standalone)").matches) document.body.classList.add("installed");
+
+

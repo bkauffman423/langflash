@@ -7,108 +7,142 @@
     {
       "front": "apple",
       "back": "la pomme",
-      "emoji": "🍎"
+      "emoji": "🍎",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "water",
       "back": "l'eau",
-      "emoji": "💧"
+      "emoji": "💧",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "to eat",
       "back": "manger",
-      "emoji": "🍽️"
+      "emoji": "🍽️",
+      "pos": "verb",
+      "kind": "word"
     },
     {
       "front": "dog",
       "back": "le chien",
-      "emoji": "🐕"
+      "emoji": "🐕",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "cat",
       "back": "le chat",
-      "emoji": "🐈"
+      "emoji": "🐈",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "house",
       "back": "la maison",
-      "emoji": "🏠"
+      "emoji": "🏠",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "book",
       "back": "le livre",
-      "emoji": "📖"
+      "emoji": "📖",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "friend",
       "back": "l'ami",
-      "emoji": "🧑‍🤝‍🧑"
+      "emoji": "🧑‍🤝‍🧑",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "bread",
       "back": "le pain",
-      "emoji": "🍞"
+      "emoji": "🍞",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "coffee",
       "back": "le café",
-      "emoji": "☕"
+      "emoji": "☕",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "good morning",
       "back": "bonjour",
       "kind": "phrase",
-      "emoji": "🌄"
+      "emoji": "🌄",
+      "pos": "expression"
     },
     {
       "front": "thank you",
       "back": "merci",
       "kind": "phrase",
-      "emoji": "🙏"
+      "emoji": "🙏",
+      "pos": "expression"
     },
     {
       "front": "how much?",
       "back": "combien ça coûte ?",
       "kind": "phrase",
-      "emoji": "💶"
+      "emoji": "💶",
+      "pos": "expression"
     },
     {
       "front": "I don't understand",
       "back": "je ne comprends pas",
       "kind": "sentence",
-      "emoji": "🤷"
+      "emoji": "🤷",
+      "pos": "expression"
     },
     {
       "front": "Where is the station?",
       "back": "où est la gare ?",
       "kind": "sentence",
-      "emoji": "🚉"
+      "emoji": "🚉",
+      "pos": "expression"
     },
     {
       "front": "night",
       "back": "la nuit",
-      "emoji": "🌙"
+      "emoji": "🌙",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "to sleep",
       "back": "dormir",
-      "emoji": "😴"
+      "emoji": "😴",
+      "pos": "verb",
+      "kind": "word"
     },
     {
       "front": "big",
       "back": "grand",
-      "emoji": "➕"
+      "emoji": "➕",
+      "pos": "adjective",
+      "kind": "word"
     },
     {
       "front": "small",
       "back": "petit",
-      "emoji": "➖"
+      "emoji": "➖",
+      "pos": "adjective",
+      "kind": "word"
     },
     {
       "front": "I would like a coffee",
       "back": "je voudrais un café",
       "kind": "sentence",
-      "emoji": "☕"
+      "emoji": "☕",
+      "pos": "expression"
     }
   ]
 }

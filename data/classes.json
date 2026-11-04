@@ -8,6 +8,12 @@
         "title": "Introductory verbs",
         "date": "2026-10-31",
         "file": "fa-lesson-intro-verbs.json"
+      },
+      {
+        "id": "conj-past",
+        "title": "Conjugation past tense",
+        "date": "2026-10-31",
+        "file": "fa-lesson-conj-past.json"
       }
     ]
   }

@@ -7,82 +7,107 @@
     {
       "front": "apple",
       "back": "der Apfel",
-      "emoji": "🍎"
+      "emoji": "🍎",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "water",
       "back": "das Wasser",
-      "emoji": "💧"
+      "emoji": "💧",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "to eat",
       "back": "essen",
-      "emoji": "🍽️"
+      "emoji": "🍽️",
+      "pos": "verb",
+      "kind": "word"
     },
     {
       "front": "dog",
       "back": "der Hund",
-      "emoji": "🐕"
+      "emoji": "🐕",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "house",
       "back": "das Haus",
-      "emoji": "🏠"
+      "emoji": "🏠",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "book",
       "back": "das Buch",
-      "emoji": "📖"
+      "emoji": "📖",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "bread",
       "back": "das Brot",
-      "emoji": "🍞"
+      "emoji": "🍞",
+      "pos": "noun",
+      "kind": "word"
     },
     {
       "front": "good morning",
       "back": "guten Morgen",
       "kind": "phrase",
-      "emoji": "🌄"
+      "emoji": "🌄",
+      "pos": "expression"
     },
     {
       "front": "thank you",
       "back": "danke",
       "kind": "phrase",
-      "emoji": "🙏"
+      "emoji": "🙏",
+      "pos": "expression"
     },
     {
       "front": "I don't understand",
       "back": "ich verstehe nicht",
       "kind": "sentence",
-      "emoji": "🤷"
+      "emoji": "🤷",
+      "pos": "expression"
     },
     {
       "front": "Where is the station?",
       "back": "Wo ist der Bahnhof?",
       "kind": "sentence",
-      "emoji": "🚉"
+      "emoji": "🚉",
+      "pos": "expression"
     },
     {
       "front": "to sleep",
       "back": "schlafen",
-      "emoji": "😴"
+      "emoji": "😴",
+      "pos": "verb",
+      "kind": "word"
     },
     {
       "front": "big",
       "back": "groß",
-      "emoji": "➕"
+      "emoji": "➕",
+      "pos": "adjective",
+      "kind": "word"
     },
     {
       "front": "small",
       "back": "klein",
-      "emoji": "➖"
+      "emoji": "➖",
+      "pos": "adjective",
+      "kind": "word"
     },
     {
       "front": "I would like a coffee",
       "back": "ich hätte gern einen Kaffee",
       "kind": "sentence",
-      "emoji": "☕"
+      "emoji": "☕",
+      "pos": "expression"
     }
   ]
 }

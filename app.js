@@ -141,8 +141,10 @@ const DEFAULTS = {
   s_tts_prompt: true, s_tts_answer: true, s_voice: "", s_tts_fallback: true,
   s_count: 20, s_shuffle: true, s_weight: true, sound: true,
   s_visual_hint: "answer",  // "answer" (default), "always", "tap", "off"
+  s_native: "en",           // Bob nov-5: native language is English...
+  s_target: "fa",           // ...and the foreign language being learned is Farsi
   s_mode: "manual",         // "manual" | "auto" | "voice" — chosen in Settings
-  s_dir: "n2t",             // "n2t" = Native-first (English → target language) DEFAULT per Bob nov-5 | "t2n" = Foreign-first
+  s_dir: "t2n",             // "t2n" = Foreign-first (see Farsi, answer English) DEFAULT per Bob nov-5 | "n2t" = Native-first
   s_he3: "he",              // 3rd-person pronoun in prompts: "he" (male) | "she" (female)
   dir_v: 1                  // direction-default version; devices saved at the old t2n default get flipped once
 };
@@ -152,7 +154,7 @@ try { savedSettings = JSON.parse(localStorage.getItem("langflash.settings") || "
 Object.assign(S, savedSettings);
 // One-time migration: devices that saved settings before the English->Farsi default
 // flip to n2t once; any explicit choice after this point is respected.
-if (!savedSettings.dir_v) { S.s_dir = "n2t"; S.dir_v = 1; saveSettings(); }
+if ((savedSettings.dir_v || 0) < 2) { S.s_dir = "t2n"; S.dir_v = 2; saveSettings(); }
 function saveSettings(){ localStorage.setItem("langflash.settings", JSON.stringify(S)); }
 // Cards may carry a {he} token for the 3rd-person pronoun; resolved per setting.
 function he3(s){ return String(s).replace(/\{he\}/g, S.s_he3 === "she" ? "She" : "He"); }
@@ -1071,7 +1073,7 @@ function variantHtml(text, rtl){
 }
 
 /* ---------- boot ---------- */
-const BUILD = "20261105h";
+const BUILD = "20261105i";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

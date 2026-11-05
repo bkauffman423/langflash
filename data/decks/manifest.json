@@ -12,8 +12,16 @@
   "name": "French — core 20"
  },
  {
-  "file": "de-core.json",
-  "name": "German — core 15"
+   "file": "de-core.json",
+   "name": "German — core 15"
+ },
+ {
+   "file": "pt-basics.json",
+   "name": "Portuguese (Brazil) — everyday basics"
+ },
+ {
+   "file": "pt-core.json",
+   "name": "Portuguese (Brazil) — core 30"
  },
  {
   "file": "fa-core.json",

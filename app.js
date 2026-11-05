@@ -87,6 +87,31 @@ const FALLBACK_DECKS = [
     ]
   },
   {
+    id: "pt-core", name: "Portuguese (Brazil) — core 30", native: "en", target: "pt",
+    items: [
+      {front:"apple", back:"a maçã", emoji:"🍎"},
+      {front:"water", back:"a água", emoji:"💧"},
+      {front:"to eat", back:"comer", emoji:"🍽️"},
+      {front:"to drink", back:"beber", emoji:"🥤"},
+      {front:"dog", back:"o cachorro", emoji:"🐕"},
+      {front:"house", back:"a casa", emoji:"🏠"},
+      {front:"car", back:"o carro", emoji:"🚗"},
+      {front:"book", back:"o livro", emoji:"📖"},
+      {front:"friend", back:"o amigo", emoji:"🧑‍🤝‍🧑"},
+      {front:"bread", back:"o pão", emoji:"🍞"},
+      {front:"coffee", back:"o café", emoji:"☕"},
+      {front:"beach", back:"a praia", emoji:"🏖️"},
+      {front:"good morning", back:"bom dia", kind:"phrase", emoji:"🌄"},
+      {front:"thank you", back:"obrigado", kind:"phrase", emoji:"🙏"},
+      {front:"I don't understand", back:"eu não entendo", kind:"sentence", emoji:"🤷"},
+      {front:"Where is the station?", back:"Onde fica a estação?", kind:"sentence", emoji:"🚉"},
+      {front:"to sleep", back:"dormir", emoji:"😴"},
+      {front:"big", back:"grande", emoji:"➕"},
+      {front:"small", back:"pequeno", emoji:"➖"},
+      {front:"I would like a coffee", back:"eu gostaria de um café", kind:"sentence", emoji:"☕"}
+    ]
+  },
+  {
     id: "fa-core", name: "Farsi (Persian) — core 30", native: "en", target: "fa",
     items: [
       {front:"apple", back:"سیب", roman:"sib", emoji:"🍎", audio:"data/audio/fa/fa-00.mp3"},
@@ -566,6 +591,23 @@ function nextCard(){
   { const disc = loadDiscards(deck.id);
     while (session.i < session.queue.length && disc.has(session.queue[session.i].idx)) session.i++; }
   if (session.i >= session.queue.length) return endSession();
+  renderCard();
+}
+
+// Back button: step to the previous card, skipping discarded ones. Re-showing a
+// card is a review pass — a fresh answer afterwards counts again, like any re-practice.
+function prevCard(){
+  clearTimer();
+  if (!session || session.i <= 0) return;
+  const disc = loadDiscards(deck.id);
+  let j = session.i - 1;
+  while (j >= 0 && disc.has(session.queue[j].idx)) j--;
+  if (j < 0) return;
+  session.i = j;
+  renderCard();
+}
+
+function renderCard(){
   phase = "prompt";
   visualTapped = false;
   const it = session.queue[session.i];
@@ -613,6 +655,9 @@ function nextCard(){
   $("note").textContent = "";
   $("feedback").textContent = ""; $("feedback").className = "";
   $("counter").textContent = `${session.i + 1} / ${session.queue.length}`;
+  { const disc = loadDiscards(deck.id); let j = session.i - 1;
+    while (j >= 0 && disc.has(session.queue[j].idx)) j--;
+    $("backbtn").style.opacity = j >= 0 ? "1" : "0.35"; }
   $("progress").style.width = (100 * session.i / session.queue.length) + "%";
   $("voicebar").style.display = (mode === "voice") ? "flex" : "none";
   $("spoken").textContent = "tap mic and say it";
@@ -806,6 +851,10 @@ $("discardbtn").onclick = (e) => {
 // Replay button: re-listen to the current card's foreign audio on demand.
 // Additive only — auto-play on card presentation and reveal timers are untouched.
 // stopSpeaking() just restarts a clip already playing so replays don't overlap.
+$("backbtn").onclick = (e) => {
+  e.stopPropagation();
+  prevCard();
+};
 $("replaybtn").onclick = (e) => {
   e.stopPropagation();
   if (!session || session.i < 0 || !session.queue[session.i] || !deck) return;
@@ -836,6 +885,7 @@ const LANGS = {
   es: { name: "Spanish", tts: "es-ES" },
   fr: { name: "French",  tts: "fr-FR" },
   de: { name: "German",  tts: "de-DE" },
+  pt: { name: "Portuguese (Brazil)", tts: "pt-BR" },
   fa: { name: "Farsi (Persian)", tts: "fa-IR", rtl: true }
 };
 function langMeta(code){ return LANGS[code] || { name: code, tts: code }; }
@@ -1073,7 +1123,7 @@ function variantHtml(text, rtl){
 }
 
 /* ---------- boot ---------- */
-const BUILD = "20261105i";
+const BUILD = "20261105k";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

@@ -69,6 +69,9 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 
 /* card */
 #session{display:none;width:min(720px,100%);height:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+#backbtn{position:absolute;top:10px;left:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--dim);font-size:22px;cursor:pointer;z-index:5;line-height:1}
+#backbtn:active{transform:scale(0.92)}
+#backbtn:hover{border-color:var(--dim);color:var(--fg)}
 #replaybtn{position:absolute;top:10px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--dim);font-size:19px;cursor:pointer;z-index:5}
 #replaybtn:active{transform:scale(0.92)}
 #stage{width:100%;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);position:relative;
@@ -172,6 +175,7 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
 
     <section id="session">
       <div id="stage">
+        <button id="backbtn" title="Back to the previous card">←</button>
         <button id="replaybtn" title="Hear this card again">🔊</button>
         <button id="discardbtn" title="Discard this card — it won't appear again unless you re-include it">🗑</button>
         <div id="kind"></div>
@@ -246,6 +250,6 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
     </div></div>
   </main>
 </div>
-<script src="app.js?v=20261105i"></script>
+<script src="app.js?v=20261105k"></script>
 </body>
 </html>

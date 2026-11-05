@@ -68,8 +68,10 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 .startbtn:disabled{opacity:.4}
 
 /* card */
-#session{display:none;width:min(720px,100%);height:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-#stage{width:100%;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+#session{display:none;width:min(720px,100%);height:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+#replaybtn{position:absolute;top:10px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--dim);font-size:19px;cursor:pointer;z-index:5}
+#replaybtn:active{transform:scale(0.92)}
+#stage{width:100%;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);position:relative;
   padding:20px;min-height:320px;display:grid;grid-template-rows:auto 1fr auto;align-content:start;gap:8px;cursor:pointer}
 #kind{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);text-align:center}
 
@@ -77,7 +79,8 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 #prompt{display:block;width:100%;font-size:clamp(36px,8vw,56px);font-weight:700;overflow-wrap:break-word;line-height:1.2;text-align:center;min-height:100px}
 #prompt .tw{display:block}
 #prompt.rtl .tw{direction:rtl;unicode-bidi:isolate;font-family:"Segoe UI","Tahoma","Noto Naskh Arabic","Vazirmatn",sans-serif}
-#prompt .roman-prompt{display:block;font-size:clamp(36px,8vw,56px);color:var(--warn);font-weight:600;margin-top:8px;letter-spacing:.4px}
+#prompt .pipesep{opacity:.4}
+  .roman-prompt{display:block;font-size:clamp(36px,8vw,56px);color:var(--warn);font-weight:600;margin-top:8px;letter-spacing:.4px}
 
 /* Answer area - FIXED HEIGHT reserved space, appears in same position */
 #answer{font-size:clamp(28px,6.5vw,44px);font-weight:700;color:var(--good);overflow-wrap:break-word;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;visibility:hidden}
@@ -102,8 +105,8 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;justify-conten
 
 /* voice */
 #voicebar{display:none;align-items:center;gap:12px;margin-top:14px}
-#counterwrap{display:flex;align-items:center;justify-content:space-between;width:100%}
-#discardbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--dim);font-size:16px;cursor:pointer}
+#counterwrap{display:flex;align-items:center;justify-content:flex-end;width:100%}
+#discardbtn{position:absolute;left:12px;bottom:10px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--dim);font-size:16px;cursor:pointer}
 #discardbtn:hover{border-color:var(--bad);color:var(--bad)}
 #discardtoast{display:none;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--dim)}
 #undodiscard{background:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;padding:5px 12px;font-size:12.5px}
@@ -156,6 +159,7 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
       <div class="sec">Language</div>
       <div class="deckcard" style="cursor:default">
         <div class="m" id="deckmeta"></div>
+        <select id="decksel" style="display:none;width:100%;padding:9px;margin-top:8px"></select>
       </div>
       <button class="startbtn" id="startbtn">Start flashcards</button>
       <button id="discbtn"></button>
@@ -168,6 +172,8 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
 
     <section id="session">
       <div id="stage">
+        <button id="replaybtn" title="Hear this card again">🔊</button>
+        <button id="discardbtn" title="Discard this card — it won't appear again unless you re-include it">🗑</button>
         <div id="kind"></div>
         <div id="visual"></div>
         <div id="prompt"></div>
@@ -181,7 +187,7 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
         <button id="micbtn" title="Speak the translation">🎙</button>
         <div id="spoken">tap mic and say it</div>
       </div>
-      <div id="counterwrap"><button id="discardbtn" title="Discard this card — it won't appear again unless you re-include it">🗑</button><div id="counter"></div></div>
+      <div id="counterwrap"><div id="counter"></div></div>
       <div id="discardtoast"></div>
     </section>
 
@@ -240,6 +246,6 @@ kbd{background:var(--card2);border:1px solid var(--line);border-radius:5px;paddi
     </div></div>
   </main>
 </div>
-<script src="app.js?v=20261104l"></script>
+<script src="app.js?v=20261105h"></script>
 </body>
 </html>

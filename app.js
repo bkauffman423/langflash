@@ -142,11 +142,17 @@ const DEFAULTS = {
   s_count: 20, s_shuffle: true, s_weight: true, sound: true,
   s_visual_hint: "answer",  // "answer" (default), "always", "tap", "off"
   s_mode: "manual",         // "manual" | "auto" | "voice" — chosen in Settings
-  s_dir: "t2n",             // "t2n" = Foreign-first (see foreign, answer native) | "n2t" = Native-first
-  s_he3: "he"               // 3rd-person pronoun in prompts: "he" (male) | "she" (female)
+  s_dir: "n2t",             // "n2t" = Native-first (English → target language) DEFAULT per Bob nov-5 | "t2n" = Foreign-first
+  s_he3: "he",              // 3rd-person pronoun in prompts: "he" (male) | "she" (female)
+  dir_v: 1                  // direction-default version; devices saved at the old t2n default get flipped once
 };
 let S = {...DEFAULTS};
-try { Object.assign(S, JSON.parse(localStorage.getItem("langflash.settings") || "{}")); } catch(e){}
+let savedSettings = {};
+try { savedSettings = JSON.parse(localStorage.getItem("langflash.settings") || "{}") || {}; } catch(e){}
+Object.assign(S, savedSettings);
+// One-time migration: devices that saved settings before the English->Farsi default
+// flip to n2t once; any explicit choice after this point is respected.
+if (!savedSettings.dir_v) { S.s_dir = "n2t"; S.dir_v = 1; saveSettings(); }
 function saveSettings(){ localStorage.setItem("langflash.settings", JSON.stringify(S)); }
 // Cards may carry a {he} token for the 3rd-person pronoun; resolved per setting.
 function he3(s){ return String(s).replace(/\{he\}/g, S.s_he3 === "she" ? "She" : "He"); }
@@ -249,11 +255,29 @@ function filterDecks(){
   const native = $("nativesel").value;
   const target = $("targetsel").value;
   const matching = decks.filter(d => d.native === native && d.target === target);
-  
+  const dsel = $("decksel");
+  if (dsel) {
+    if (matching.length > 1) {
+      // Multiple decks share this language pair — let the user pick one.
+      dsel.style.display = "block";
+      dsel.innerHTML = "";
+      matching.forEach(d => {
+        const o = document.createElement("option");
+        o.value = d.id;
+        o.textContent = d.name.replace(/^[^—]*—\s*/, "") + " · " + d.items.length + " cards";
+        dsel.appendChild(o);
+      });
+      if (S.s_deck && matching.some(d => d.id === S.s_deck)) dsel.value = S.s_deck;
+      dsel.onchange = () => { S.s_deck = dsel.value; saveSettings(); filterDecks(); };
+    } else {
+      dsel.style.display = "none";
+    }
+  }
   const meta = $("deckmeta");
   if (matching.length > 0) {
-    // Show first matching deck
-    const d = matching[0];
+    // Show the selected matching deck (default: first)
+    const dselActive = dsel && dsel.style.display !== "none" && dsel.value && matching.some(d => d.id === dsel.value);
+    const d = dselActive ? matching.find(d => d.id === dsel.value) : matching[0];
     const counts = {word:0, phrase:0, sentence:0};
     d.items.forEach(it => counts[kindOf(it)]++);
     // Deck names encode their language ("Spanish — core 30"); the arrow already names it — drop the prefix.
@@ -561,7 +585,7 @@ function nextCard(){
     html = `<span class="tw">${esc(it.front)}</span>`;
   } else {
     // Foreign-first (default): foreign word on top, Finglish underneath
-    html = `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>`;
+    html = `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${variantHtml(it.back, rtl)}</span>`;
     if (it.roman) html += `<span class="roman-prompt">${esc(it.roman)}</span>`;
   }
   promptEl.innerHTML = html;
@@ -571,7 +595,7 @@ function nextCard(){
   // visibility-hidden: the card reserves the answer's exact space from the question
   // phase, so revealing can never resize or shift the card.
   const trHtml = flipped
-    ? `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${esc(it.back)}</span>` + (it.roman ? `<span class="roman">${esc(it.roman)}</span>` : "")
+    ? `<span class="tw"${rtl ? ' dir="rtl"' : ""}>${variantHtml(it.back, rtl)}</span>` + (it.roman ? `<span class="roman">${esc(it.roman)}</span>` : "")
     : (it.front ? `<span class="translation">${esc(it.front)}</span>` : "");
   const altHtml = it.note ? `<span class="alt">${esc(it.note)}</span>` : "";
   const vHtml = S.s_visual_hint !== "off" && (it.img || it.emoji)
@@ -777,6 +801,22 @@ $("discardbtn").onclick = (e) => {
   nextCard();
 };
 
+// Replay button: re-listen to the current card's foreign audio on demand.
+// Additive only — auto-play on card presentation and reveal timers are untouched.
+// stopSpeaking() just restarts a clip already playing so replays don't overlap.
+$("replaybtn").onclick = (e) => {
+  e.stopPropagation();
+  if (!session || session.i < 0 || !session.queue[session.i] || !deck) return;
+  const it = session.queue[session.i];
+  stopSpeaking();
+  const url = stampedAudio(it);
+  if (url) {
+    playUrl(url).catch(() => { if (S.s_tts_fallback !== false) speakFallback(it.front, deck.target); });
+  } else if (S.s_tts_fallback !== false) {
+    speakFallback(it.front, deck.target);
+  }
+};
+
 // Practice mode now lives in Settings; keep the global `mode` in sync.
 function syncMode(){ mode = (S.s_mode === "auto" || S.s_mode === "voice") ? S.s_mode : "manual"; }
 function updateChip(){
@@ -863,6 +903,9 @@ function playUrl(url){
 }
 function speak(text, lang, audioUrl){
   if (!S.sound || !text) return;
+  // "|" is a translation-variant separator (1:N / N:1 cards). Never speak it as
+  // "pipe" (and "/" must not be spoken as "slash"): swap for a comma pause.
+  text = text.replace(/\s*\|\s*/g, ", ").replace(/\s*\/\s*/g, ", ");
   const meta = langMeta(lang);
   const v = pickVoice(meta.tts);
   if (v || (window.speechSynthesis && meta.tts.split("-")[0] === "en")) {
@@ -888,6 +931,7 @@ function speak(text, lang, audioUrl){
 }
 async function speakFallback(text, lang){
   const base = lang.split("-")[0];
+  text = text.replace(/\s*\|\s*/g, ", ").replace(/\s*\/\s*/g, ", ");
   // Google online TTS (media element — no CORS needed; blocked by CORS via fetch)
   playUrl("https://translate.google.com/translate_tts?ie=UTF-8&q=" +
     encodeURIComponent(text) + "&tl=" + encodeURIComponent(base) + "&client=tw-ob");
@@ -944,8 +988,7 @@ function norm(s){
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")   // strip Latin accents
     .replace(/[\u064B-\u0652\u0670\u0640]/g, "")  // strip Arabic harakat + tatweel
     .replace(/\u200C/g, " ")                       // ZWNJ (نمی‌شوم) → word boundary
-    .replace(/[¿?¡!.,;:"'،؛؟]/g, "")
-    .replace(/\b(el|la|los|las|le|la|un|una|der|die|das|l|le|la|a|the)\b/g, " ")
+    .replace(/[¿?¡!.,;:"'،؛؟|/]/g, "")    .replace(/\b(el|la|los|las|le|la|un|una|der|die|das|l|le|la|a|the)\b/g, " ")
     .replace(/\s+/g, " ").trim();
 }
 function lev(a, b){
@@ -1015,8 +1058,20 @@ if ($("he3sel")) $("he3sel").addEventListener("change", () => {
 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
 
+// Pipe-separated translation variants must line up across the Farsi (RTL) and
+// Finglish (LTR) lines. RTL text alone would put the first variant on the
+// RIGHT; rendering the variants as individual RTL runs inside an LTR wrapper
+// keeps the visual left-to-right order identical to the Finglish line.
+function variantHtml(text, rtl){
+  const parts = String(text).split(/\s*\|\s*/);
+  if (parts.length < 2 || !rtl) return esc(text);
+  const sep = "<span class=\"pipesep\"> | </span>";
+  const spans = parts.map(p => "<span dir=\"rtl\">" + esc(p) + "</span>");
+  return "<span dir=\"ltr\">" + spans.join(sep) + "</span>";
+}
+
 /* ---------- boot ---------- */
-const BUILD = "20261104l";
+const BUILD = "20261105h";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

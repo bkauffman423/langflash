@@ -1,18 +1,22 @@
 [
-  {
-    "file": "es-core.json",
-    "name": "Spanish — core 30"
-  },
-  {
-    "file": "fr-core.json",
-    "name": "French — core 20"
-  },
-  {
-    "file": "de-core.json",
-    "name": "German — core 15"
-  },
-  {
-    "file": "fa-core.json",
-    "name": "Farsi (Persian) — core 30"
-  }
+ {
+  "file": "fa-basics.json",
+  "name": "Farsi — everyday basics"
+ },
+ {
+  "file": "es-core.json",
+  "name": "Spanish — core 30"
+ },
+ {
+  "file": "fr-core.json",
+  "name": "French — core 20"
+ },
+ {
+  "file": "de-core.json",
+  "name": "German — core 15"
+ },
+ {
+  "file": "fa-core.json",
+  "name": "Farsi (Persian) — core 22"
+ }
 ]

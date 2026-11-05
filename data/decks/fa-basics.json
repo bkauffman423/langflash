@@ -1,0 +1,265 @@
+{
+ "id": "fa-basics",
+ "name": "Farsi — everyday basics",
+ "native": "en",
+ "target": "fa",
+ "items": [
+  {
+   "front": "hello",
+   "back": "سلام",
+   "roman": "Salam",
+   "emoji": "👋",
+   "audio": "data/audio/fa/basics/b-00.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "goodbye",
+   "back": "خداحافظ",
+   "roman": "Khoda Hafez",
+   "emoji": "👋",
+   "audio": "data/audio/fa/basics/b-01.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "how are you?",
+   "back": "چطوری؟",
+   "roman": "Chetori?",
+   "audio": "data/audio/fa/basics/b-02.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "I'm fine",
+   "back": "خوبم",
+   "roman": "Khubam",
+   "audio": "data/audio/fa/basics/b-03.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "nice to meet you",
+   "back": "خوشوقتم",
+   "roman": "Khoshvaghtam",
+   "audio": "data/audio/fa/basics/b-04.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "yes",
+   "back": "بله | آره",
+   "roman": "Bale | Are",
+   "emoji": "✅",
+   "audio": "data/audio/fa/basics/b-05.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "no",
+   "back": "نه",
+   "roman": "Na",
+   "emoji": "❌",
+   "audio": "data/audio/fa/basics/b-06.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "please",
+   "back": "لطفاً",
+   "roman": "Lotfan",
+   "emoji": "🙏",
+   "audio": "data/audio/fa/basics/b-07.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "thanks",
+   "back": "مرسی | ممنون",
+   "roman": "Mersi | Mamnoon",
+   "emoji": "🙏",
+   "audio": "data/audio/fa/basics/b-08.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "excuse me | sorry",
+   "back": "ببخشید",
+   "roman": "Bebakhshid",
+   "audio": "data/audio/fa/basics/b-09.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "my dear | you're kind (taarof)",
+   "back": "قربانت",
+   "roman": "Ghorbanet",
+   "audio": "data/audio/fa/basics/b-10.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "do you speak English?",
+   "back": "انگلیسی بلدی؟",
+   "roman": "Inglisi Baladi?",
+   "audio": "data/audio/fa/basics/b-11.mp3",
+   "kind": "sentence",
+   "pos": "expression"
+  },
+  {
+   "front": "help!",
+   "back": "کمک!",
+   "roman": "Komak!",
+   "emoji": "🆘",
+   "audio": "data/audio/fa/basics/b-12.mp3",
+   "kind": "word",
+   "pos": "noun"
+  },
+  {
+   "front": "what's your name?",
+   "back": "اسمت چیه؟",
+   "roman": "Esmet Chie?",
+   "audio": "data/audio/fa/basics/b-13.mp3",
+   "kind": "sentence",
+   "pos": "expression"
+  },
+  {
+   "front": "my name is Mohsen",
+   "back": "اسم من محسن است",
+   "roman": "Esm-e Man Mohsen Ast",
+   "audio": "data/audio/fa/basics/b-14.mp3",
+   "kind": "sentence",
+   "pos": "expression"
+  },
+  {
+   "front": "how much?",
+   "back": "چقدره؟",
+   "roman": "Cheghadre?",
+   "audio": "data/audio/fa/basics/b-15.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "where is the toilet?",
+   "back": "دستشویی کجاست؟",
+   "roman": "Dastshui Kojast?",
+   "emoji": "🚻",
+   "audio": "data/audio/fa/basics/b-16.mp3",
+   "kind": "sentence",
+   "pos": "noun"
+  },
+  {
+   "front": "what time is it?",
+   "back": "ساعت چند است؟",
+   "roman": "Saate Chande?",
+   "emoji": "🕐",
+   "audio": "data/audio/fa/basics/b-17.mp3",
+   "kind": "sentence",
+   "pos": "noun"
+  },
+  {
+   "front": "good",
+   "back": "خوب",
+   "roman": "Khub",
+   "emoji": "👍",
+   "audio": "data/audio/fa/basics/b-18.mp3",
+   "kind": "word",
+   "pos": "adjective"
+  },
+  {
+   "front": "bad",
+   "back": "بد",
+   "roman": "Badd",
+   "emoji": "👎",
+   "audio": "data/audio/fa/basics/b-19.mp3",
+   "kind": "word",
+   "pos": "adjective"
+  },
+  {
+   "front": "tea",
+   "back": "چای",
+   "roman": "Chay",
+   "emoji": "🍵",
+   "audio": "data/audio/fa/basics/b-20.mp3",
+   "kind": "word",
+   "pos": "noun"
+  },
+  {
+   "front": "water",
+   "back": "آب",
+   "roman": "Ab",
+   "emoji": "💧",
+   "audio": "data/audio/fa/basics/b-21.mp3",
+   "kind": "word",
+   "pos": "noun"
+  },
+  {
+   "front": "I don't understand",
+   "back": "نمیفهمم",
+   "roman": "Nemifahmam",
+   "audio": "data/audio/fa/basics/b-22.mp3",
+   "kind": "word",
+   "pos": "verb"
+  },
+  {
+   "front": "you're welcome",
+   "back": "خواهش میکنم",
+   "roman": "Khahesh Mikonam",
+   "audio": "data/audio/fa/basics/b-23.mp3",
+   "kind": "sentence",
+   "pos": "expression"
+  },
+  {
+   "front": "see you",
+   "back": "میبینمت",
+   "roman": "Mibinamet",
+   "audio": "data/audio/fa/basics/b-24.mp3",
+   "kind": "word",
+   "pos": "expression"
+  },
+  {
+   "front": "bread",
+   "back": "نان",
+   "roman": "Nan",
+   "emoji": "🍞",
+   "audio": "data/audio/fa/basics/b-25.mp3",
+   "kind": "word",
+   "pos": "noun"
+  },
+  {
+   "front": "friend",
+   "back": "دوست",
+   "roman": "Doost",
+   "emoji": "🤝",
+   "audio": "data/audio/fa/basics/b-26.mp3",
+   "kind": "word",
+   "pos": "noun"
+  },
+  {
+   "front": "big",
+   "back": "بزرگ",
+   "roman": "Bozorg",
+   "emoji": "🐘",
+   "audio": "data/audio/fa/basics/b-27.mp3",
+   "kind": "word",
+   "pos": "adjective"
+  },
+  {
+   "front": "small",
+   "back": "کوچک",
+   "roman": "Kuchik",
+   "emoji": "🐜",
+   "audio": "data/audio/fa/basics/b-28.mp3",
+   "kind": "word",
+   "pos": "adjective"
+  },
+  {
+   "front": "very",
+   "back": "خیلی",
+   "roman": "Kheili",
+   "audio": "data/audio/fa/basics/b-29.mp3",
+   "kind": "word",
+   "pos": "adverb"
+  }
+ ]
+}

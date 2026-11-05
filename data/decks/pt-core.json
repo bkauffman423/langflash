@@ -1,38 +1,181 @@
 {
   "id": "pt-core",
-  "name": "Portuguese (Brazil) — core 30",
+  "name": "Portuguese (Brazil) — core 24",
   "native": "en",
   "target": "pt",
   "items": [
-    { "front": "apple", "back": "a maçã", "emoji": "🍎", "note": "a = the (feminine)", "kind": "word", "pos": "noun" },
-    { "front": "water", "back": "a água", "emoji": "💧", "kind": "word", "pos": "noun" },
-    { "front": "to eat", "back": "comer", "emoji": "🍽️", "kind": "word", "pos": "verb" },
-    { "front": "to drink", "back": "beber", "emoji": "🥤", "kind": "word", "pos": "verb" },
-    { "front": "dog", "back": "o cachorro", "emoji": "🐕", "note": "also: o cão", "kind": "word", "pos": "noun" },
-    { "front": "cat", "back": "o gato", "emoji": "🐈", "kind": "word", "pos": "noun" },
-    { "front": "house", "back": "a casa", "emoji": "🏠", "kind": "word", "pos": "noun" },
-    { "front": "car", "back": "o carro", "emoji": "🚗", "note": "in Brazil: carro", "kind": "word", "pos": "noun" },
-    { "front": "book", "back": "o livro", "emoji": "📖", "kind": "word", "pos": "noun" },
-    { "front": "friend", "back": "o amigo", "emoji": "🧑‍🤝‍🧑", "note": "feminine: a amiga", "kind": "word", "pos": "noun" },
-    { "front": "bread", "back": "o pão", "emoji": "🍞", "kind": "word", "pos": "noun" },
-    { "front": "milk", "back": "o leite", "emoji": "🥛", "kind": "word", "pos": "noun" },
-    { "front": "coffee", "back": "o café", "emoji": "☕", "kind": "word", "pos": "noun" },
-    { "front": "night", "back": "a noite", "emoji": "🌙", "kind": "word", "pos": "noun" },
-    { "front": "day", "back": "o dia", "emoji": "☀️", "kind": "word", "pos": "noun" },
-    { "front": "to work", "back": "trabalhar", "emoji": "💼", "kind": "word", "pos": "verb" },
-    { "front": "to sleep", "back": "dormir", "emoji": "😴", "kind": "word", "pos": "verb" },
-    { "front": "big", "back": "grande", "emoji": "➕", "kind": "word", "pos": "adjective" },
-    { "front": "small", "back": "pequeno", "emoji": "➖", "kind": "word", "pos": "adjective" },
-    { "front": "fast", "back": "rápido", "emoji": "⚡", "kind": "word", "pos": "adjective" },
-    { "front": "slow", "back": "lento", "emoji": "🐢", "kind": "word", "pos": "adjective" },
-    { "front": "the weather", "back": "o tempo", "emoji": "🌦️", "note": "tempo = weather OR time", "kind": "phrase", "pos": "noun" },
-    { "front": "money", "back": "o dinheiro", "emoji": "💰", "kind": "word", "pos": "noun" },
-    { "front": "street", "back": "a rua", "emoji": "🛣️", "kind": "word", "pos": "noun" },
-    { "front": "beach", "back": "a praia", "emoji": "🏖️", "kind": "word", "pos": "noun" },
-    { "front": "I would like a coffee", "back": "eu gostaria de um café", "emoji": "☕", "kind": "sentence", "pos": "expression" },
-    { "front": "Where is the station?", "back": "Onde fica a estação?", "emoji": "🚉", "note": "fica = is located", "kind": "sentence", "pos": "expression" },
-    { "front": "What time is it?", "back": "Que horas são?", "emoji": "🕐", "kind": "sentence", "pos": "expression" },
-    { "front": "I'm learning Portuguese", "back": "estou aprendendo português", "emoji": "🇧🇷", "kind": "sentence", "pos": "verb" },
-    { "front": "How do you say that?", "back": "como se diz isso?", "emoji": "💬", "kind": "sentence", "pos": "expression" }
+    {
+      "front": "apple",
+      "back": "a maçã",
+      "emoji": "🍎",
+      "note": "a = the (feminine)",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "to eat",
+      "back": "comer",
+      "emoji": "🍽️",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to drink",
+      "back": "beber",
+      "emoji": "🥤",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "dog",
+      "back": "o cachorro",
+      "emoji": "🐕",
+      "note": "also: o cão",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "cat",
+      "back": "o gato",
+      "emoji": "🐈",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "house",
+      "back": "a casa",
+      "emoji": "🏠",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "car",
+      "back": "o carro",
+      "emoji": "🚗",
+      "note": "in Brazil: carro",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "book",
+      "back": "o livro",
+      "emoji": "📖",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "milk",
+      "back": "o leite",
+      "emoji": "🥛",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "coffee",
+      "back": "o café",
+      "emoji": "☕",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "night",
+      "back": "a noite",
+      "emoji": "🌙",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "day",
+      "back": "o dia",
+      "emoji": "☀️",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "to work",
+      "back": "trabalhar",
+      "emoji": "💼",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "to sleep",
+      "back": "dormir",
+      "emoji": "😴",
+      "kind": "word",
+      "pos": "verb"
+    },
+    {
+      "front": "fast",
+      "back": "rápido",
+      "emoji": "⚡",
+      "kind": "word",
+      "pos": "adjective"
+    },
+    {
+      "front": "slow",
+      "back": "lento",
+      "emoji": "🐢",
+      "kind": "word",
+      "pos": "adjective"
+    },
+    {
+      "front": "the weather",
+      "back": "o tempo",
+      "emoji": "🌦️",
+      "note": "tempo = weather OR time",
+      "kind": "phrase",
+      "pos": "noun"
+    },
+    {
+      "front": "money",
+      "back": "o dinheiro",
+      "emoji": "💰",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "street",
+      "back": "a rua",
+      "emoji": "🛣️",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "beach",
+      "back": "a praia",
+      "emoji": "🏖️",
+      "kind": "word",
+      "pos": "noun"
+    },
+    {
+      "front": "I would like a coffee",
+      "back": "eu gostaria de um café",
+      "emoji": "☕",
+      "kind": "sentence",
+      "pos": "expression"
+    },
+    {
+      "front": "Where is the station?",
+      "back": "Onde fica a estação?",
+      "emoji": "🚉",
+      "note": "fica = is located",
+      "kind": "sentence",
+      "pos": "expression"
+    },
+    {
+      "front": "I'm learning Portuguese",
+      "back": "estou aprendendo português",
+      "emoji": "🇧🇷",
+      "kind": "sentence",
+      "pos": "verb"
+    },
+    {
+      "front": "How do you say that?",
+      "back": "como se diz isso?",
+      "emoji": "💬",
+      "kind": "sentence",
+      "pos": "expression"
+    }
   ]
 }

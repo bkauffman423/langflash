@@ -80,7 +80,7 @@
       "audio": "data/audio/pt/basics/b-08.mp3"
     },
     {
-      "front": "excuse me | sorry",
+      "front": "excuse me",
       "back": "com licença",
       "note": "sorry: 'desculpa'",
       "kind": "word",
@@ -88,11 +88,11 @@
       "audio": "data/audio/pt/basics/b-09.mp3"
     },
     {
-      "front": "my dear | you're kind (taarof)",
-      "back": "meu querido",
-      "note": "affectionate",
+      "front": "dear",
+      "back": "querido",
+      "note": "feminine: 'querida'; term of endearment",
       "kind": "word",
-      "pos": "expression",
+      "pos": "adjective",
       "audio": "data/audio/pt/basics/b-10.mp3"
     },
     {
@@ -119,8 +119,8 @@
       "audio": "data/audio/pt/basics/b-13.mp3"
     },
     {
-      "front": "my name is Mohsen",
-      "back": "meu nome é Mohsen",
+      "front": "my name is João",
+      "back": "meu nome é João",
       "kind": "sentence",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-14.mp3"

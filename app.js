@@ -1123,7 +1123,7 @@ function variantHtml(text, rtl){
 }
 
 /* ---------- boot ---------- */
-const BUILD = "20261105l";
+const BUILD = "20261107a";
 { const bt = $("buildtag"); if (bt) bt.textContent = "LangFlash build " + BUILD; }
 $("soundbtn").textContent = S.sound ? "🔊" : "🔇";
 pushSettingsToUI();

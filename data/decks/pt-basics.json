@@ -9,7 +9,6 @@
       "back": "olá",
       "emoji": "👋",
       "note": "informal: 'oi'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-00.mp3"
     },
@@ -18,7 +17,6 @@
       "back": "tchau",
       "emoji": "👋",
       "note": "formal: 'até logo'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-01.mp3"
     },
@@ -26,7 +24,6 @@
       "front": "how are you?",
       "back": "tudo bem?",
       "note": "or: 'como vai?'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-02.mp3"
     },
@@ -34,7 +31,6 @@
       "front": "I'm fine",
       "back": "estou bem",
       "note": "casual: 'tô bem'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-03.mp3"
     },
@@ -42,7 +38,6 @@
       "front": "nice to meet you",
       "back": "prazer",
       "note": "full: 'muito prazer'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-04.mp3"
     },
@@ -50,7 +45,6 @@
       "front": "yes",
       "back": "sim",
       "emoji": "✅",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-05.mp3"
     },
@@ -58,7 +52,6 @@
       "front": "no",
       "back": "não",
       "emoji": "❌",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-06.mp3"
     },
@@ -66,7 +59,6 @@
       "front": "please",
       "back": "por favor",
       "emoji": "🙏",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-07.mp3"
     },
@@ -75,7 +67,6 @@
       "back": "obrigado | obrigada",
       "emoji": "🙏",
       "note": "men say 'obrigado', women 'obrigada'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-08.mp3"
     },
@@ -83,7 +74,6 @@
       "front": "excuse me",
       "back": "com licença",
       "note": "sorry: 'desculpa'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-09.mp3"
     },
@@ -91,14 +81,12 @@
       "front": "dear",
       "back": "querido",
       "note": "feminine: 'querida'; term of endearment",
-      "kind": "word",
       "pos": "adjective",
       "audio": "data/audio/pt/basics/b-10.mp3"
     },
     {
       "front": "do you speak English?",
       "back": "você fala inglês?",
-      "kind": "sentence",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-11.mp3"
     },
@@ -107,21 +95,18 @@
       "back": "socorro!",
       "emoji": "🆘",
       "note": "everyday 'help me': 'me ajuda'",
-      "kind": "word",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-12.mp3"
     },
     {
       "front": "what's your name?",
       "back": "qual é o seu nome?",
-      "kind": "sentence",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-13.mp3"
     },
     {
       "front": "my name is João",
       "back": "meu nome é João",
-      "kind": "sentence",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-14.mp3"
     },
@@ -129,7 +114,6 @@
       "front": "how much?",
       "back": "quanto custa?",
       "note": "or: 'quanto é?'",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-15.mp3"
     },
@@ -137,7 +121,6 @@
       "front": "where is the toilet?",
       "back": "onde é o banheiro?",
       "emoji": "🚻",
-      "kind": "sentence",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-16.mp3"
     },
@@ -145,7 +128,6 @@
       "front": "what time is it?",
       "back": "que horas são?",
       "emoji": "🕐",
-      "kind": "sentence",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-17.mp3"
     },
@@ -154,7 +136,6 @@
       "back": "bom",
       "emoji": "👍",
       "note": "casual: 'tá bom'",
-      "kind": "word",
       "pos": "adjective",
       "audio": "data/audio/pt/basics/b-18.mp3"
     },
@@ -162,7 +143,6 @@
       "front": "bad",
       "back": "ruim",
       "emoji": "👎",
-      "kind": "word",
       "pos": "adjective",
       "audio": "data/audio/pt/basics/b-19.mp3"
     },
@@ -170,7 +150,6 @@
       "front": "tea",
       "back": "chá",
       "emoji": "🍵",
-      "kind": "word",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-20.mp3"
     },
@@ -178,29 +157,26 @@
       "front": "water",
       "back": "água",
       "emoji": "💧",
-      "kind": "word",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-21.mp3"
     },
     {
       "front": "I don't understand",
       "back": "não entendo",
-      "kind": "word",
       "pos": "verb",
-      "audio": "data/audio/pt/basics/b-22.mp3"
+      "audio": "data/audio/pt/basics/b-22.mp3",
+      "kind": "sentence"
     },
     {
       "front": "you're welcome",
       "back": "de nada",
       "note": "or: 'por nada'",
-      "kind": "sentence",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-23.mp3"
     },
     {
       "front": "see you",
       "back": "até mais",
-      "kind": "word",
       "pos": "expression",
       "audio": "data/audio/pt/basics/b-24.mp3"
     },
@@ -208,7 +184,6 @@
       "front": "bread",
       "back": "pão",
       "emoji": "🍞",
-      "kind": "word",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-25.mp3"
     },
@@ -217,7 +192,6 @@
       "back": "amigo",
       "emoji": "🤝",
       "note": "feminine: 'amiga'",
-      "kind": "word",
       "pos": "noun",
       "audio": "data/audio/pt/basics/b-26.mp3"
     },
@@ -225,7 +199,6 @@
       "front": "big",
       "back": "grande",
       "emoji": "🐘",
-      "kind": "word",
       "pos": "adjective",
       "audio": "data/audio/pt/basics/b-27.mp3"
     },
@@ -233,14 +206,12 @@
       "front": "small",
       "back": "pequeno",
       "emoji": "🐜",
-      "kind": "word",
       "pos": "adjective",
       "audio": "data/audio/pt/basics/b-28.mp3"
     },
     {
       "front": "very",
       "back": "muito",
-      "kind": "word",
       "pos": "adverb",
       "audio": "data/audio/pt/basics/b-29.mp3"
     }
